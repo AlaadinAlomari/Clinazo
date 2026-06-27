@@ -3,7 +3,7 @@ exports.handler = async (event) => {
     return { statusCode: 405, body: JSON.stringify({ error: 'Method Not Allowed' }) };
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = (process.env.ANTHROPIC_API_KEY || '').trim();
   if (!apiKey) {
     return { statusCode: 500, body: JSON.stringify({ error: 'Server is missing ANTHROPIC_API_KEY.' }) };
   }
@@ -42,7 +42,7 @@ exports.handler = async (event) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     };
-  } catch {
-    return { statusCode: 502, body: JSON.stringify({ error: 'Failed to reach Anthropic API.' }) };
+  } catch (err) {
+    return { statusCode: 502, body: JSON.stringify({ error: 'Failed to reach Anthropic API.', detail: err.message }) };
   }
 };
