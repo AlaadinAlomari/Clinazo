@@ -10,6 +10,8 @@
 <link rel="canonical" href="https://clinazo.com/">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#04080F">
+<meta name="facebook-domain-verification" content="z1gh47c9kvb1mnvu0lo9vai5hhif2o">
+<meta name="google-site-verification" content="KuilcYei4PehYUKPz21tAQAbQkTwbWWeTYnH1659Am0">
 
 <!-- Open Graph -->
 <meta property="og:title" content="Clinazo — عيادتك تشتغل وأنت نايم">
@@ -59,11 +61,11 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', 'META_PIXEL_ID'); // TODO: replace META_PIXEL_ID with the real Meta Pixel ID
+fbq('init', '1033238849263575');
 fbq('track', 'PageView');
 </script>
 <noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=META_PIXEL_ID&ev=PageView&noscript=1"
+src="https://www.facebook.com/tr?id=1033238849263575&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
 <style>
@@ -239,10 +241,6 @@ src="https://www.facebook.com/tr?id=META_PIXEL_ID&ev=PageView&noscript=1"
     border-radius:24px;box-shadow:0 20px 60px rgba(4,8,15,.12);overflow:hidden;
     border:1px solid rgba(0,0,0,.06);
   }
-  .api-key-bar{display:flex;gap:8px;padding:14px;background:#FFF8E1;border-bottom:1px solid rgba(0,0,0,.06);}
-  .api-key-bar input{flex:1;border:1px solid rgba(0,0,0,.12);border-radius:10px;padding:10px 14px;font-family:inherit;font-size:13px;}
-  .api-key-bar button{border:none;border-radius:10px;padding:10px 16px;background:var(--dark);color:#fff;font-weight:700;font-size:13px;cursor:pointer;}
-  .api-key-note{font-size:12px;color:var(--muted);padding:0 14px 12px;background:#FFF8E1;}
   .chat-header{
     background:var(--gradient);color:#fff;padding:18px 22px;
     display:flex;align-items:center;gap:14px;
@@ -362,11 +360,6 @@ src="https://www.facebook.com/tr?id=META_PIXEL_ID&ev=PageView&noscript=1"
       <p>اسألها عن عيادتك وهي بتوصيلك بالباقة المناسبة</p>
     </div>
     <div class="chat-card">
-      <div class="api-key-bar" id="apiKeyBar">
-        <input type="password" id="apiKeyInput" placeholder="أدخل Anthropic API Key لتشغيل ليلى" autocomplete="off">
-        <button id="apiKeySaveBtn">حفظ</button>
-      </div>
-      <div class="api-key-note">المفتاح يُحفظ محلياً بمتصفحك فقط (sessionStorage) ولا يُرسل لأي مكان سوى Anthropic.</div>
       <div class="chat-header">
         <div class="chat-avatar">ل</div>
         <div>
@@ -610,7 +603,7 @@ src="https://www.facebook.com/tr?id=META_PIXEL_ID&ev=PageView&noscript=1"
 
 <script>
   // ── Placeholder configuration — fill in before going live ──
-  const WHATSAPP_NUMBER = "WHATSAPP_NUMBER"; // TODO: replace with the real WhatsApp number, e.g. "9715xxxxxxxx"
+  const WHATSAPP_NUMBER = "97431063816";
 
   // Sticky nav blur
   const nav = document.getElementById('nav');
@@ -923,9 +916,6 @@ Everything in Growth PLUS:
   const chatInput = document.getElementById('chatInput');
   const chatSendBtn = document.getElementById('chatSendBtn');
   const chatEndedNote = document.getElementById('chatEndedNote');
-  const apiKeyBar = document.getElementById('apiKeyBar');
-  const apiKeyInput = document.getElementById('apiKeyInput');
-  const apiKeySaveBtn = document.getElementById('apiKeySaveBtn');
 
   let conversationHistory = [];
   let conversationEnded = false;
@@ -988,29 +978,6 @@ Everything in Growth PLUS:
     if(el) el.remove();
   }
 
-  function getApiKey(){
-    return sessionStorage.getItem('clinazo_api_key') || '';
-  }
-
-  function setApiKey(key){
-    sessionStorage.setItem('clinazo_api_key', key);
-  }
-
-  apiKeySaveBtn.addEventListener('click', () => {
-    const key = apiKeyInput.value.trim();
-    if(key){
-      setApiKey(key);
-      apiKeyBar.style.display = 'none';
-    }
-  });
-  apiKeyInput.addEventListener('keydown', (e) => {
-    if(e.key === 'Enter') apiKeySaveBtn.click();
-  });
-
-  if(getApiKey()){
-    apiKeyBar.style.display = 'none';
-  }
-
   // First message on load
   addMessageBubble('layla', FIRST_MESSAGE);
   conversationHistory.push({ role: 'assistant', content: FIRST_MESSAGE });
@@ -1019,13 +986,6 @@ Everything in Growth PLUS:
     if(conversationEnded) return;
     const text = chatInput.value.trim();
     if(!text) return;
-
-    const apiKey = getApiKey();
-    if(!apiKey){
-      addMessageBubble('error', 'يرجى إدخال Anthropic API Key لتشغيل ليلى');
-      apiKeyBar.style.display = 'flex';
-      return;
-    }
 
     if(!hasTrackedInitiateCheckout){
       hasTrackedInitiateCheckout = true;
@@ -1038,17 +998,10 @@ Everything in Growth PLUS:
     showTyping();
 
     try{
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      const response = await fetch('/.netlify/functions/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1000,
           system: LAYLA_SYSTEM_PROMPT,
           messages: conversationHistory
         })
@@ -1077,7 +1030,7 @@ Everything in Growth PLUS:
 
     }catch(err){
       hideTyping();
-      addMessageBubble('error', 'حدث خطأ في الاتصال. تأكد من صحة المفتاح وحاول مرة أخرى.');
+      addMessageBubble('error', 'حدث خطأ في الاتصال. حاول مرة أخرى بعد قليل.');
     }
   }
 
