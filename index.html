@@ -5,13 +5,69 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Clinazo — عيادتك تشتغل وأنت نايم</title>
 <meta name="description" content="Clinazo منصة أتمتة واتساب للعيادات الطبية وعيادات الأسنان في الخليج. ليلى ترد على مرضاك 24/7، تحجز المواعيد، وتذكّرهم تلقائياً.">
+<meta name="keywords" content="أتمتة واتساب للعيادات, ذكاء اصطناعي للعيادات الطبية, حجز مواعيد طبية تلقائي, Clinazo, WhatsApp automation clinics, dental clinic AI assistant Gulf">
+<meta name="author" content="Clinazo">
+<link rel="canonical" href="https://clinazo.com/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#04080F">
+<meta name="facebook-domain-verification" content="z1gh47c9kvb1mnvu0lo9vai5hhif2o">
+<meta name="google-site-verification" content="KuilcYei4PehYUKPz21tAQAbQkTwbWWeTYnH1659Am0">
+
+<!-- Open Graph -->
 <meta property="og:title" content="Clinazo — عيادتك تشتغل وأنت نايم">
 <meta property="og:description" content="منصة أتمتة واتساب للعيادات الطبية في الخليج العربي. ليلى ترد بدلك 24/7.">
 <meta property="og:type" content="website">
-<meta name="robots" content="index, follow">
+<meta property="og:url" content="https://clinazo.com/">
+<meta property="og:site_name" content="Clinazo">
+<meta property="og:locale" content="ar_AE">
+<meta property="og:image" content="https://clinazo.com/og-image.png">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Clinazo — عيادتك تشتغل وأنت نايم">
+<meta name="twitter:description" content="منصة أتمتة واتساب للعيادات الطبية في الخليج العربي. ليلى ترد بدلك 24/7.">
+<meta name="twitter:image" content="https://clinazo.com/og-image.png">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%2300B4A0'/%3E%3Cpath d='M2 12H6L9 4L15 20L18 12H22' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalBusiness",
+  "name": "Clinazo",
+  "url": "https://clinazo.com/",
+  "description": "منصة أتمتة واتساب بالذكاء الاصطناعي للعيادات الطبية وعيادات الأسنان في الخليج العربي.",
+  "email": "support@clinazo.com",
+  "areaServed": ["United Arab Emirates", "Saudi Arabia", "Qatar", "Kuwait", "Bahrain", "Oman"],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "support@clinazo.com",
+    "contactType": "customer support"
+  }
+}
+</script>
+
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1033238849263575');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1033238849263575&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 <style>
   :root{
     --dark:#04080F;
@@ -185,10 +241,6 @@
     border-radius:24px;box-shadow:0 20px 60px rgba(4,8,15,.12);overflow:hidden;
     border:1px solid rgba(0,0,0,.06);
   }
-  .api-key-bar{display:flex;gap:8px;padding:14px;background:#FFF8E1;border-bottom:1px solid rgba(0,0,0,.06);}
-  .api-key-bar input{flex:1;border:1px solid rgba(0,0,0,.12);border-radius:10px;padding:10px 14px;font-family:inherit;font-size:13px;}
-  .api-key-bar button{border:none;border-radius:10px;padding:10px 16px;background:var(--dark);color:#fff;font-weight:700;font-size:13px;cursor:pointer;}
-  .api-key-note{font-size:12px;color:var(--muted);padding:0 14px 12px;background:#FFF8E1;}
   .chat-header{
     background:var(--gradient);color:#fff;padding:18px 22px;
     display:flex;align-items:center;gap:14px;
@@ -223,6 +275,17 @@
   .chat-input-row button{
     border:none;border-radius:14px;width:50px;background:var(--gradient);color:#fff;
     font-size:18px;cursor:pointer;flex-shrink:0;
+  }
+  .chat-input-row input:disabled{background:var(--light);color:var(--muted);cursor:not-allowed;}
+  .wa-wrap{background:transparent!important;box-shadow:none!important;padding:4px 0!important;}
+  .wa-button{
+    display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;
+    padding:13px 22px;border-radius:14px;font-weight:700;font-size:15px;
+  }
+  .wa-button:hover{filter:brightness(1.05);}
+  .chat-ended-note{
+    display:none;text-align:center;font-size:13px;color:var(--teal);font-weight:600;
+    padding:0 16px 16px;background:#fff;
   }
 
   /* FINAL CTA */
@@ -263,11 +326,11 @@
   <div class="nav-inner">
     <a href="index.html" class="logo">
       <span class="logo-mark">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M2 12H6L9 4L15 20L18 12H22" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" role="img" aria-label="Clinazo"><path d="M2 12H6L9 4L15 20L18 12H22" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </span>
       <span>Clinazo</span>
     </a>
-    <nav class="nav-links">
+    <nav class="nav-links" aria-label="روابط التنقل الرئيسية">
       <a href="#pricing">الأسعار</a>
       <a href="#chat">احكِ مع ليلى</a>
     </nav>
@@ -275,6 +338,7 @@
   </div>
 </header>
 
+<main>
 <!-- HERO -->
 <section class="hero">
   <div class="container hero-inner">
@@ -284,6 +348,31 @@
     <div class="actions">
       <a href="#pricing" class="btn btn-primary">أوقف الخسارة — شوف الباقات</a>
       <span class="micro">✓ ضمان استرداد 30 يوم · بدون عقود · إلغاء بأي وقت</span>
+    </div>
+  </div>
+</section>
+
+<!-- CHAT WIDGET -->
+<section class="chat-section" id="chat">
+  <div class="container">
+    <div class="section-head">
+      <h2>جرّب ليلى الآن — مجاناً</h2>
+      <p>اسألها عن عيادتك وهي بتوصيلك بالباقة المناسبة</p>
+    </div>
+    <div class="chat-card">
+      <div class="chat-header">
+        <div class="chat-avatar">ل</div>
+        <div>
+          <div class="chat-name">ليلى — Clinazo</div>
+          <div class="chat-status"><span class="dot"></span> جاهزة الآن</div>
+        </div>
+      </div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input-row" id="chatInputRow">
+        <input type="text" id="chatInput" placeholder="اكتب هنا...">
+        <button id="chatSendBtn">↑</button>
+      </div>
+      <div class="chat-ended-note" id="chatEndedNote">✓ تم — تواصل معنا على واتساب للمتابعة</div>
     </div>
   </div>
 </section>
@@ -472,35 +561,6 @@
   </div>
 </section>
 
-<!-- CHAT WIDGET -->
-<section class="chat-section" id="chat">
-  <div class="container">
-    <div class="section-head">
-      <h2>احكِ مع ليلى الآن</h2>
-      <p>جرّبها بنفسك — اسألها أي شيء عن عيادتك وباقة Clinazo المناسبة لك.</p>
-    </div>
-    <div class="chat-card">
-      <div class="api-key-bar" id="apiKeyBar">
-        <input type="password" id="apiKeyInput" placeholder="أدخل Anthropic API Key لتشغيل ليلى" autocomplete="off">
-        <button id="apiKeySaveBtn">حفظ</button>
-      </div>
-      <div class="api-key-note">المفتاح يُحفظ محلياً بمتصفحك فقط (sessionStorage) ولا يُرسل لأي مكان سوى Anthropic.</div>
-      <div class="chat-header">
-        <div class="chat-avatar">ل</div>
-        <div>
-          <div class="chat-name">ليلى — Clinazo</div>
-          <div class="chat-status"><span class="dot"></span> جاهزة الآن</div>
-        </div>
-      </div>
-      <div class="chat-messages" id="chatMessages"></div>
-      <div class="chat-input-row">
-        <input type="text" id="chatInput" placeholder="اكتب هنا...">
-        <button id="chatSendBtn">↑</button>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- FINAL CTA -->
 <section class="final-cta">
   <div class="container">
@@ -510,6 +570,7 @@
     <div class="micro">✓ ضمان 30 يوم · ✓ بدون عقود · ✓ إلغاء بأي وقت</div>
   </div>
 </section>
+</main>
 
 <!-- FOOTER -->
 <footer class="footer">
@@ -518,7 +579,7 @@
       <div class="footer-brand">
         <a href="index.html" class="logo">
           <span class="logo-mark">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M2 12H6L9 4L15 20L18 12H22" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" role="img" aria-label="Clinazo"><path d="M2 12H6L9 4L15 20L18 12H22" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </span>
           <span>Clinazo</span>
         </a>
@@ -541,6 +602,9 @@
 </footer>
 
 <script>
+  // ── Placeholder configuration — fill in before going live ──
+  const WHATSAPP_NUMBER = "97431063816";
+
   // Sticky nav blur
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => {
@@ -771,25 +835,26 @@ Then collect ONE BY ONE:
 2. اسم العيادة → for invoice
 3. رقم الواتساب (مع كود الدولة) → for onboarding
 4. الدولة والمدينة → for invoice
-5. البريد الإلكتروني → for PayPal receipt
+5. البريد الإلكتروني → for invoice records
 
-After collecting all 5, send:
+After collecting all 5, send ONE message with the invoice summary AND the WhatsApp handoff, in this exact structure:
 
-"شكراً [الاسم] 🙏
-
-ملخص طلبك:
+"ملخص طلبك:
 👤 [الاسم الكامل]
 🏥 [اسم العيادة]
 📍 [الدولة والمدينة]
 📦 باقة [Essential/Growth/Pro]
 💰 رسوم التأسيس: $[amount]
 
-للبدء، ادفع رسوم التأسيس عبر PayPal:
-📧 support@clinazo.com
+شكراً [الاسم] — كل شيء جاهز! 🎉
 
-بعد الدفع أرسللي صورة الإيصال على نفس المحادثة وبنبدأ خلال 24 ساعة ✓
+للمتابعة وإتمام الدفع، تواصل مع فريقنا مباشرة على واتساب:
 
-ضمان استرداد كامل 30 يوم من تاريخ الإطلاق 🛡️"
+[[WA_HANDOFF|الاسم الكامل|اسم العيادة|اسم الباقة|رسوم التأسيس]]"
+
+The last line MUST be the marker exactly in this format: double square brackets, "WA_HANDOFF", then a pipe (|) followed by the client's full name, a pipe, the clinic name, a pipe, the plan name (Essential/Growth/Pro), a pipe, the setup fee amount as a number only (no $ sign), then double closing square brackets. Replace each field with the actual collected value — do NOT leave the literal words "الاسم الكامل" etc. The marker must be the very last line, with nothing after it.
+
+This is your FINAL message. After sending it, do NOT send any further messages — the website will show a WhatsApp button and end the conversation automatically.
 
 ═══════════════════════════════════════
   CLINAZO PLANS REFERENCE
@@ -838,22 +903,24 @@ Everything in Growth PLUS:
 ✗ Never recommend a plan without referencing THEIR specific answers
 ✗ Never give generic recommendation — always personalized
 ✗ Never collect client info before they agree to a plan
+✗ Never send any message after the WA_HANDOFF marker — it ends the conversation
 ✓ Always match user language (Arabic/English)
 ✓ Always reference their specific problems in recommendation
 ✓ Always mention 30-day guarantee when closing
-✓ Always collect all 5 client details before sending PayPal info
-✓ Show the invoice summary before payment details`;
+✓ Always collect all 5 client details before sending the invoice summary and WA_HANDOFF marker
+✓ Show the invoice summary before the WhatsApp handoff marker`;
 
   const FIRST_MESSAGE = "أهلاً! أنا ليلى، مستشارة Clinazo 👋\nقبل ما أقترح أي شيء، بدي أفهم عيادتك كويس.\n\nسؤالي الأول — كم موعد تقريباً بتستقبلوا يومياً؟";
 
   const chatMessages = document.getElementById('chatMessages');
   const chatInput = document.getElementById('chatInput');
   const chatSendBtn = document.getElementById('chatSendBtn');
-  const apiKeyBar = document.getElementById('apiKeyBar');
-  const apiKeyInput = document.getElementById('apiKeyInput');
-  const apiKeySaveBtn = document.getElementById('apiKeySaveBtn');
+  const chatEndedNote = document.getElementById('chatEndedNote');
 
   let conversationHistory = [];
+  let conversationEnded = false;
+  let hasTrackedInitiateCheckout = false;
+  const WA_HANDOFF_RE = /\[\[WA_HANDOFF\|([^|]*)\|([^|]*)\|([^|]*)\|([^\]]*)\]\]/;
 
   function addMessageBubble(role, text){
     const div = document.createElement('div');
@@ -881,42 +948,18 @@ Everything in Growth PLUS:
     if(el) el.remove();
   }
 
-  function getApiKey(){
-    return sessionStorage.getItem('clinazo_api_key') || '';
-  }
-
-  function setApiKey(key){
-    sessionStorage.setItem('clinazo_api_key', key);
-  }
-
-  apiKeySaveBtn.addEventListener('click', () => {
-    const key = apiKeyInput.value.trim();
-    if(key){
-      setApiKey(key);
-      apiKeyBar.style.display = 'none';
-    }
-  });
-  apiKeyInput.addEventListener('keydown', (e) => {
-    if(e.key === 'Enter') apiKeySaveBtn.click();
-  });
-
-  if(getApiKey()){
-    apiKeyBar.style.display = 'none';
-  }
-
   // First message on load
   addMessageBubble('layla', FIRST_MESSAGE);
   conversationHistory.push({ role: 'assistant', content: FIRST_MESSAGE });
 
   async function sendMessage(){
+    if(conversationEnded) return;
     const text = chatInput.value.trim();
     if(!text) return;
 
-    const apiKey = getApiKey();
-    if(!apiKey){
-      addMessageBubble('error', 'يرجى إدخال Anthropic API Key لتشغيل ليلى');
-      apiKeyBar.style.display = 'flex';
-      return;
+    if(!hasTrackedInitiateCheckout){
+      hasTrackedInitiateCheckout = true;
+      if(typeof fbq === 'function') fbq('track', 'InitiateCheckout');
     }
 
     addMessageBubble('user', text);
@@ -925,17 +968,10 @@ Everything in Growth PLUS:
     showTyping();
 
     try{
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      const response = await fetch('/.netlify/functions/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1000,
           system: LAYLA_SYSTEM_PROMPT,
           messages: conversationHistory
         })
@@ -952,12 +988,28 @@ Everything in Growth PLUS:
         ? data.content[0].text
         : 'عذراً، حدث خطأ بالرد. حاول مرة أخرى.';
 
-      addMessageBubble('layla', reply);
+      const waMatch = reply.match(WA_HANDOFF_RE);
+      const displayText = waMatch ? reply.replace(waMatch[0], '').trim() : reply;
+
+      addMessageBubble('layla', displayText);
       conversationHistory.push({ role: 'assistant', content: reply });
+
+      if(displayText.includes('ملخص طلبك')){
+        const waBtn = document.createElement('a');
+        waBtn.href = 'https://wa.me/' + WHATSAPP_NUMBER;
+        waBtn.target = '_blank';
+        waBtn.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:10px;background:#25D366;color:#fff;padding:14px 24px;border-radius:12px;text-decoration:none;font-weight:700;font-size:16px;margin-top:12px;width:100%';
+        waBtn.innerHTML = '💬 تواصل معنا على واتساب';
+        chatMessages.appendChild(waBtn);
+        chatInput.disabled = true;
+        chatSendBtn.disabled = true;
+        chatEndedNote.style.display = 'block';
+        conversationEnded = true;
+      }
 
     }catch(err){
       hideTyping();
-      addMessageBubble('error', 'حدث خطأ في الاتصال. تأكد من صحة المفتاح وحاول مرة أخرى.');
+      addMessageBubble('error', 'حدث خطأ في الاتصال. حاول مرة أخرى بعد قليل.');
     }
   }
 
