@@ -988,13 +988,15 @@ Everything in Growth PLUS:
         ? data.content[0].text
         : 'عذراً، حدث خطأ بالرد. حاول مرة أخرى.';
 
+      console.log('Layla reply:', reply);
+
       const waMatch = reply.match(WA_HANDOFF_RE);
       const displayText = waMatch ? reply.replace(waMatch[0], '').trim() : reply;
 
       addMessageBubble('layla', displayText);
       conversationHistory.push({ role: 'assistant', content: reply });
 
-      if(displayText.includes('ملخص طلبك')){
+      if(displayText.includes('support@clinazo.com') || displayText.includes('PayPal') || displayText.includes('$1,500') || displayText.includes('$2,500') || displayText.includes('$4,000')){
         const waBtn = document.createElement('a');
         waBtn.href = 'https://wa.me/' + WHATSAPP_NUMBER;
         waBtn.target = '_blank';
