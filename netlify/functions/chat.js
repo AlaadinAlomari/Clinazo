@@ -15,9 +15,9 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: JSON.stringify({ error: 'Invalid request body.' }) };
   }
 
-  const { system, messages } = payload;
-  if (typeof system !== 'string' || !Array.isArray(messages)) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Missing system or messages.' }) };
+  const { systemPrompt, messages } = payload;
+  if (typeof systemPrompt !== 'string' || !Array.isArray(messages)) {
+    return { statusCode: 400, body: JSON.stringify({ error: 'Missing systemPrompt or messages.' }) };
   }
 
   try {
@@ -31,7 +31,7 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
         max_tokens: 1000,
-        system,
+        system: systemPrompt,
         messages
       })
     });
