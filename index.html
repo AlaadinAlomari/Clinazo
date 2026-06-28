@@ -126,7 +126,11 @@ src="https://www.facebook.com/tr?id=1033238849263575&ev=PageView&noscript=1"
   .nav-links{display:flex;align-items:center;gap:30px;font-weight:600;font-size:15px;}
   .nav-links a:hover{color:var(--teal);}
   .nav-cta{padding:11px 24px;font-size:15px;}
-  @media(max-width:680px){.nav-links{display:none;}}
+  .nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;border:none;background:transparent;cursor:pointer;padding:10px;flex-shrink:0;}
+  .nav-toggle span{display:block;width:100%;height:2px;background:var(--dark);border-radius:2px;transition:.25s;}
+  .nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0;}
+  .nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
 
   /* HERO */
   .hero{padding:90px 0 70px;background:var(--surface);}
@@ -318,7 +322,49 @@ src="https://www.facebook.com/tr?id=1033238849263575&ev=PageView&noscript=1"
     .footer-inner{flex-direction:column;}
     .footer-copy{text-align:right;}
   }
+
+  /* TABLET */
+  @media(max-width:768px){
+    .nav-links{
+      display:none;position:absolute;top:100%;right:0;left:0;
+      flex-direction:column;align-items:stretch;gap:0;
+      background:var(--surface);padding:8px 16px 14px;
+      border-bottom:1px solid rgba(0,0,0,.06);box-shadow:0 14px 28px rgba(4,8,15,.08);
+    }
+    .nav-links.open{display:flex;}
+    .nav-links a{padding:14px 4px;min-height:48px;display:flex;align-items:center;border-bottom:1px solid rgba(0,0,0,.05);}
+    .nav-toggle{display:flex;}
+    .hero h1{font-size:clamp(30px,7vw,48px);}
+    .chat-card{max-width:100%;}
+  }
+
+  /* MOBILE */
+  @media(max-width:480px){
+    .container{padding:0 16px;}
+    .nav-inner{padding:12px 16px;}
+    section{padding:48px 0;}
+    .hero{padding:40px 0 36px;}
+    .hero h1{font-size:clamp(28px,9vw,42px);}
+    .hero p.sub{font-size:17px;}
+    .features-grid{grid-template-columns:repeat(2,1fr);gap:14px;}
+    .feature-card{padding:20px 16px;}
+    .feature-card .emoji{font-size:28px;margin-bottom:10px;}
+    .feature-card h3{font-size:17px;}
+    .feature-card p{font-size:16px;}
+    .pain-card{font-size:16px;padding:20px 18px;}
+    .compare th,.compare td{font-size:16px;}
+    .price-card li{font-size:16px;}
+    .roi-box{padding:20px;}
+    .chat-card{border-radius:18px;}
+    .chat-messages{padding:16px;height:380px;}
+    .msg{font-size:16px;max-width:88%;}
+    .chat-input-row input{font-size:16px;}
+    .footer-links{font-size:16px;}
+    .btn,.nav-cta,.chat-input-row button,.price-card .btn,.wa-button{min-height:48px;}
+  }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>emailjs.init("uOMUB1_GoSw1qlLGg");</script>
 </head>
 <body>
 
@@ -330,11 +376,14 @@ src="https://www.facebook.com/tr?id=1033238849263575&ev=PageView&noscript=1"
       </span>
       <span>Clinazo</span>
     </a>
-    <nav class="nav-links" aria-label="روابط التنقل الرئيسية">
+    <nav class="nav-links" id="navLinks" aria-label="روابط التنقل الرئيسية">
       <a href="#pricing">الأسعار</a>
       <a href="#chat">احكِ مع ليلى</a>
     </nav>
     <a href="#pricing" class="btn btn-primary nav-cta">ابدأ الآن</a>
+    <button class="nav-toggle" id="navToggle" aria-label="فتح قائمة التنقل" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
 
@@ -611,6 +660,20 @@ src="https://www.facebook.com/tr?id=1033238849263575&ev=PageView&noscript=1"
     nav.classList.toggle('scrolled', window.scrollY > 10);
   });
 
+  // Mobile hamburger nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
   // ROI Calculator
   const apptsSlider = document.getElementById('apptsSlider');
   const priceSlider = document.getElementById('priceSlider');
@@ -678,7 +741,7 @@ Q2: "وشو تخصص عيادتك؟"
   - جلدية: "جلدية — جميل. المرضى عندكم بحاجة متابعة دورية، يعني إعادة التفعيل مهمة جداً."
   - عامة: "طب عام — بيعني كميات مرضى عالية وأسئلة كثيرة يومياً."
 
-Q3: "كم متوسط سعر الجلسة الواحدة عندكم؟"
+Q3: "وتقريباً كم متوسط سعر الجلسة الواحدة بالدولار؟ (مثال: $100، $200...)"
 → Save for calculation. No judgment.
 
 Q4: "كيف بيحجز المرضى عندكم الآن؟ (واتساب، هاتف، زيارة مباشرة...)"
@@ -753,7 +816,11 @@ Say:
 [Reference Q8 - gaps]:
 ↳ 3 تذكيرات قبل كل موعد — الكراسي الفاضية بتنخفض 70%.
 
-التكلفة الشهرية $497. لو ليلى استرجعت موعدين ناسيين بالشهر — الاشتراك رجع لوحده."
+التكلفة الشهرية $497. لو ليلى استرجعت موعدين ناسيين بالشهر — الاشتراك رجع لوحده.
+
+رسوم التأسيس: $1,500 — مرة واحدة
+الاشتراك الشهري: $497
+وعندنا ضمان استرداد كامل 30 يوم 🛡️"
 
 ─── Growth ($2,500 setup + $797/month) ───
 Recommend when: 10-25 appts/day OR has ads OR wants to grow
@@ -768,12 +835,16 @@ Say:
 ↳ صفحتك على الإنترنت بتحوّل كل ضغطة إعلان لموعد مباشر — ما في مريض يضيع.
 
 [Reference returning patients gap]:
-↳ مرضاك القدامى اللي ما رجعوا — ليلى بتبعتلهم رسالة مخصصة باسمهم. 4 من كل 10 بيرجعوا.
+↳ مرضاك القدامى اللي ما رجعوا — ليلى بتبعتلهم رسالة مخصصة باسمهم.
 
 [If they have social media]:
 ↳ بوستات السوشيال ميديا بتتكتب تلقائياً بالذكاء الاصطناعي — بس اكتب الفكرة وليلى بتكمل.
 
-بالأرقام — الاشتراك $797 بالشهر مقابل استرجاع $[recovery] محتملة."
+بالأرقام — الاشتراك $797 بالشهر مقابل استرجاع $[recovery] محتملة.
+
+رسوم التأسيس: $2,500 — مرة واحدة
+الاشتراك الشهري: $797
+وعندنا ضمان استرداد كامل 30 يوم 🛡️"
 
 ─── Pro ($4,000 setup + $1,197/month) ───
 Recommend when: 25+ appts/day OR multiple doctors OR complex needs
@@ -789,7 +860,11 @@ Say:
 
 ↳ تحليلات الإعلانات — شوف كل دولار صرفته وين راح ومن جاء منه.
 
-↳ تقارير الإدارة الكاملة — لوحة أرقام لكل قرار في عيادتك."
+↳ تقارير الإدارة الكاملة — لوحة أرقام لكل قرار في عيادتك.
+
+رسوم التأسيس: $4,000 — مرة واحدة
+الاشتراك الشهري: $1,197
+وعندنا ضمان استرداد كامل 30 يوم 🛡️"
 
 ═══════════════════════════════════════
   PHASE 4 — OBJECTIONS (handle with expertise)
@@ -850,9 +925,9 @@ After collecting all 5, send ONE message with the invoice summary AND the WhatsA
 
 للمتابعة وإتمام الدفع، تواصل مع فريقنا مباشرة على واتساب:
 
-[[WA_HANDOFF|الاسم الكامل|اسم العيادة|اسم الباقة|رسوم التأسيس]]"
+[[WA_HANDOFF|الاسم الكامل|اسم العيادة|رقم الواتساب|الدولة والمدينة|البريد الإلكتروني|اسم الباقة|رسوم التأسيس|عدد المواعيد اليومية من Q1|التخصص من Q2|سعر الجلسة من Q3|أكبر مشكلة من Q5]]"
 
-The last line MUST be the marker exactly in this format: double square brackets, "WA_HANDOFF", then a pipe (|) followed by the client's full name, a pipe, the clinic name, a pipe, the plan name (Essential/Growth/Pro), a pipe, the setup fee amount as a number only (no $ sign), then double closing square brackets. Replace each field with the actual collected value — do NOT leave the literal words "الاسم الكامل" etc. The marker must be the very last line, with nothing after it.
+The last line MUST be the marker exactly in this format: double square brackets, "WA_HANDOFF", then a pipe (|) followed by the client's full name, a pipe, the clinic name, a pipe, the WhatsApp number, a pipe, the country and city, a pipe, the email address, a pipe, the plan name (Essential/Growth/Pro), a pipe, the setup fee amount as a number only (no $ sign), a pipe, the daily appointments number from Q1, a pipe, the specialty from Q2, a pipe, the session price from Q3, a pipe, the main problem from Q5, then double closing square brackets. Replace each field with the actual collected value — do NOT leave the literal placeholder words. The marker must be the very last line, with nothing after it.
 
 This is your FINAL message. After sending it, do NOT send any further messages — the website will show a WhatsApp button and end the conversation automatically.
 
@@ -920,7 +995,9 @@ Everything in Growth PLUS:
   let conversationHistory = [];
   let conversationEnded = false;
   let hasTrackedInitiateCheckout = false;
-  const WA_HANDOFF_RE = /\[\[WA_HANDOFF\|([^|]*)\|([^|]*)\|([^|]*)\|([^\]]*)\]\]/;
+  const WA_HANDOFF_RE = /\[\[WA_HANDOFF\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^\]]*)\]\]/;
+  const SHEETS_URL = "https://script.google.com/macros/s/AKfycbxlKI5OKmvLf5Na2nul9ASpHFF2FuZ2gbKl_zZlbWtqeAH65KxgvsMDJL5TvqFA7KqfZA/exec";
+  const PLAN_MONTHLY_FEE = { Essential: 497, Growth: 797, Pro: 1197 };
 
   function addMessageBubble(role, text){
     const div = document.createElement('div');
@@ -988,17 +1065,77 @@ Everything in Growth PLUS:
         ? data.content[0].text
         : 'عذراً، حدث خطأ بالرد. حاول مرة أخرى.';
 
+      console.log('Layla reply:', reply);
+
       const waMatch = reply.match(WA_HANDOFF_RE);
       const displayText = waMatch ? reply.replace(waMatch[0], '').trim() : reply;
 
       addMessageBubble('layla', displayText);
       conversationHistory.push({ role: 'assistant', content: reply });
 
-      if(displayText.includes('ملخص طلبك')){
+      if(waMatch){
+        const [, collectedName, collectedClinic, collectedWhatsapp, collectedCity, collectedEmail, recommendedPlan, setupFee, appointments, specialty, sessionPrice, mainProblem] = waMatch;
+        const clientData = {
+          name: collectedName,
+          clinicName: collectedClinic,
+          whatsapp: collectedWhatsapp,
+          city: collectedCity,
+          email: collectedEmail,
+          plan: recommendedPlan,
+          setupFee: setupFee,
+          monthlyFee: PLAN_MONTHLY_FEE[recommendedPlan.trim()] || '',
+          appointments: appointments,
+          specialty: specialty,
+          sessionPrice: sessionPrice,
+          mainProblem: mainProblem
+        };
+        try{
+          const result = await emailjs.send('clinazo_service', 'template_fmbi9jf', {
+            client_name: clientData.name,
+            clinic_name: clientData.clinicName,
+            client_whatsapp: clientData.whatsapp,
+            client_city: clientData.city,
+            client_email: clientData.email,
+            plan_name: clientData.plan,
+            setup_fee: clientData.setupFee,
+            monthly_fee: clientData.monthlyFee
+          });
+          console.log('Email sent:', result);
+        }catch(err){
+          console.error('Email error:', err);
+        }
+
+        try{
+          await fetch(SHEETS_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              client_name: clientData.name,
+              clinic_name: clientData.clinicName,
+              client_whatsapp: clientData.whatsapp,
+              client_city: clientData.city,
+              client_email: clientData.email,
+              plan_name: clientData.plan,
+              setup_fee: clientData.setupFee,
+              monthly_fee: clientData.monthlyFee,
+              appointments: clientData.appointments,
+              specialty: clientData.specialty,
+              session_price: clientData.sessionPrice,
+              main_problem: clientData.mainProblem
+            })
+          });
+          console.log("Sheets logged");
+        } catch (err) {
+          console.error("Sheets error:", err);
+        }
+      }
+
+      if(displayText.includes('support@clinazo.com') || displayText.includes('PayPal') || displayText.includes('$1,500') || displayText.includes('$2,500') || displayText.includes('$4,000')){
         const waBtn = document.createElement('a');
         waBtn.href = 'https://wa.me/' + WHATSAPP_NUMBER;
         waBtn.target = '_blank';
-        waBtn.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:10px;background:#25D366;color:#fff;padding:14px 24px;border-radius:12px;text-decoration:none;font-weight:700;font-size:16px;margin-top:12px;width:100%';
+        waBtn.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:10px;background:#25D366;color:#fff;padding:14px 24px;border-radius:12px;text-decoration:none;font-weight:700;font-size:16px;margin-top:12px;width:100%;min-height:48px;';
         waBtn.innerHTML = '💬 تواصل معنا على واتساب';
         chatMessages.appendChild(waBtn);
         chatInput.disabled = true;
