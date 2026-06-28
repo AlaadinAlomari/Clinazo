@@ -741,7 +741,7 @@ Q2: "وشو تخصص عيادتك؟"
   - جلدية: "جلدية — جميل. المرضى عندكم بحاجة متابعة دورية، يعني إعادة التفعيل مهمة جداً."
   - عامة: "طب عام — بيعني كميات مرضى عالية وأسئلة كثيرة يومياً."
 
-Q3: "كم متوسط سعر الجلسة الواحدة عندكم؟"
+Q3: "وتقريباً كم متوسط سعر الجلسة الواحدة بالدولار؟ (مثال: $100، $200...)"
 → Save for calculation. No judgment.
 
 Q4: "كيف بيحجز المرضى عندكم الآن؟ (واتساب، هاتف، زيارة مباشرة...)"
@@ -816,7 +816,11 @@ Say:
 [Reference Q8 - gaps]:
 ↳ 3 تذكيرات قبل كل موعد — الكراسي الفاضية بتنخفض 70%.
 
-التكلفة الشهرية $497. لو ليلى استرجعت موعدين ناسيين بالشهر — الاشتراك رجع لوحده."
+التكلفة الشهرية $497. لو ليلى استرجعت موعدين ناسيين بالشهر — الاشتراك رجع لوحده.
+
+رسوم التأسيس: $1,500 — مرة واحدة
+الاشتراك الشهري: $497
+وعندنا ضمان استرداد كامل 30 يوم 🛡️"
 
 ─── Growth ($2,500 setup + $797/month) ───
 Recommend when: 10-25 appts/day OR has ads OR wants to grow
@@ -831,12 +835,16 @@ Say:
 ↳ صفحتك على الإنترنت بتحوّل كل ضغطة إعلان لموعد مباشر — ما في مريض يضيع.
 
 [Reference returning patients gap]:
-↳ مرضاك القدامى اللي ما رجعوا — ليلى بتبعتلهم رسالة مخصصة باسمهم. 4 من كل 10 بيرجعوا.
+↳ مرضاك القدامى اللي ما رجعوا — ليلى بتبعتلهم رسالة مخصصة باسمهم.
 
 [If they have social media]:
 ↳ بوستات السوشيال ميديا بتتكتب تلقائياً بالذكاء الاصطناعي — بس اكتب الفكرة وليلى بتكمل.
 
-بالأرقام — الاشتراك $797 بالشهر مقابل استرجاع $[recovery] محتملة."
+بالأرقام — الاشتراك $797 بالشهر مقابل استرجاع $[recovery] محتملة.
+
+رسوم التأسيس: $2,500 — مرة واحدة
+الاشتراك الشهري: $797
+وعندنا ضمان استرداد كامل 30 يوم 🛡️"
 
 ─── Pro ($4,000 setup + $1,197/month) ───
 Recommend when: 25+ appts/day OR multiple doctors OR complex needs
@@ -852,7 +860,11 @@ Say:
 
 ↳ تحليلات الإعلانات — شوف كل دولار صرفته وين راح ومن جاء منه.
 
-↳ تقارير الإدارة الكاملة — لوحة أرقام لكل قرار في عيادتك."
+↳ تقارير الإدارة الكاملة — لوحة أرقام لكل قرار في عيادتك.
+
+رسوم التأسيس: $4,000 — مرة واحدة
+الاشتراك الشهري: $1,197
+وعندنا ضمان استرداد كامل 30 يوم 🛡️"
 
 ═══════════════════════════════════════
   PHASE 4 — OBJECTIONS (handle with expertise)
@@ -1061,19 +1073,32 @@ Everything in Growth PLUS:
       conversationHistory.push({ role: 'assistant', content: reply });
 
       if(waMatch){
+        const [, collectedName, collectedClinic, collectedWhatsapp, collectedCity, collectedEmail, recommendedPlan, setupFee] = waMatch;
+        const clientData = {
+          name: collectedName,
+          clinicName: collectedClinic,
+          whatsapp: collectedWhatsapp,
+          city: collectedCity,
+          email: collectedEmail,
+          plan: recommendedPlan,
+          setupFee: setupFee,
+          monthlyFee: PLAN_MONTHLY_FEE[recommendedPlan.trim()] || ''
+        };
         try{
-          const [, collectedName, collectedClinic, collectedWhatsapp, collectedCity, collectedEmail, recommendedPlan, setupFee] = waMatch;
-          emailjs.send('clinazo_service', 'template_fmbi9jf', {
-            client_name: collectedName,
-            clinic_name: collectedClinic,
-            client_whatsapp: collectedWhatsapp,
-            client_city: collectedCity,
-            client_email: collectedEmail,
-            plan_name: recommendedPlan,
-            setup_fee: setupFee,
-            monthly_fee: PLAN_MONTHLY_FEE[recommendedPlan.trim()] || ''
-          }).catch(function(){});
-        }catch(emailErr){}
+          const result = await emailjs.send('clinazo_service', 'template_fmbi9jf', {
+            client_name: clientData.name,
+            clinic_name: clientData.clinicName,
+            client_whatsapp: clientData.whatsapp,
+            client_city: clientData.city,
+            client_email: clientData.email,
+            plan_name: clientData.plan,
+            setup_fee: clientData.setupFee,
+            monthly_fee: clientData.monthlyFee
+          });
+          console.log('Email sent:', result);
+        }catch(err){
+          console.error('Email error:', err);
+        }
       }
 
       if(displayText.includes('support@clinazo.com') || displayText.includes('PayPal') || displayText.includes('$1,500') || displayText.includes('$2,500') || displayText.includes('$4,000')){
