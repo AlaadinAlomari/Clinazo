@@ -363,6 +363,8 @@ src="https://www.facebook.com/tr?id=1033238849263575&ev=PageView&noscript=1"
     .btn,.nav-cta,.chat-input-row button,.price-card .btn,.wa-button{min-height:48px;}
   }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>emailjs.init("uOMUB1_GoSw1qlLGg");</script>
 </head>
 <body>
 
@@ -911,9 +913,9 @@ After collecting all 5, send ONE message with the invoice summary AND the WhatsA
 
 للمتابعة وإتمام الدفع، تواصل مع فريقنا مباشرة على واتساب:
 
-[[WA_HANDOFF|الاسم الكامل|اسم العيادة|اسم الباقة|رسوم التأسيس]]"
+[[WA_HANDOFF|الاسم الكامل|اسم العيادة|رقم الواتساب|الدولة والمدينة|البريد الإلكتروني|اسم الباقة|رسوم التأسيس]]"
 
-The last line MUST be the marker exactly in this format: double square brackets, "WA_HANDOFF", then a pipe (|) followed by the client's full name, a pipe, the clinic name, a pipe, the plan name (Essential/Growth/Pro), a pipe, the setup fee amount as a number only (no $ sign), then double closing square brackets. Replace each field with the actual collected value — do NOT leave the literal words "الاسم الكامل" etc. The marker must be the very last line, with nothing after it.
+The last line MUST be the marker exactly in this format: double square brackets, "WA_HANDOFF", then a pipe (|) followed by the client's full name, a pipe, the clinic name, a pipe, the WhatsApp number, a pipe, the country and city, a pipe, the email address, a pipe, the plan name (Essential/Growth/Pro), a pipe, the setup fee amount as a number only (no $ sign), then double closing square brackets. Replace each field with the actual collected value — do NOT leave the literal words "الاسم الكامل" etc. The marker must be the very last line, with nothing after it.
 
 This is your FINAL message. After sending it, do NOT send any further messages — the website will show a WhatsApp button and end the conversation automatically.
 
@@ -981,7 +983,8 @@ Everything in Growth PLUS:
   let conversationHistory = [];
   let conversationEnded = false;
   let hasTrackedInitiateCheckout = false;
-  const WA_HANDOFF_RE = /\[\[WA_HANDOFF\|([^|]*)\|([^|]*)\|([^|]*)\|([^\]]*)\]\]/;
+  const WA_HANDOFF_RE = /\[\[WA_HANDOFF\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^\]]*)\]\]/;
+  const PLAN_MONTHLY_FEE = { Essential: 497, Growth: 797, Pro: 1197 };
 
   function addMessageBubble(role, text){
     const div = document.createElement('div');
@@ -1056,6 +1059,22 @@ Everything in Growth PLUS:
 
       addMessageBubble('layla', displayText);
       conversationHistory.push({ role: 'assistant', content: reply });
+
+      if(waMatch){
+        try{
+          const [, collectedName, collectedClinic, collectedWhatsapp, collectedCity, collectedEmail, recommendedPlan, setupFee] = waMatch;
+          emailjs.send('clinazo_service', 'template_fmbi9jf', {
+            client_name: collectedName,
+            clinic_name: collectedClinic,
+            client_whatsapp: collectedWhatsapp,
+            client_city: collectedCity,
+            client_email: collectedEmail,
+            plan_name: recommendedPlan,
+            setup_fee: setupFee,
+            monthly_fee: PLAN_MONTHLY_FEE[recommendedPlan.trim()] || ''
+          }).catch(function(){});
+        }catch(emailErr){}
+      }
 
       if(displayText.includes('support@clinazo.com') || displayText.includes('PayPal') || displayText.includes('$1,500') || displayText.includes('$2,500') || displayText.includes('$4,000')){
         const waBtn = document.createElement('a');
