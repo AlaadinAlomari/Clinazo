@@ -925,9 +925,9 @@ After collecting all 5, send ONE message with the invoice summary AND the WhatsA
 
 للمتابعة وإتمام الدفع، تواصل مع فريقنا مباشرة على واتساب:
 
-[[WA_HANDOFF|الاسم الكامل|اسم العيادة|رقم الواتساب|الدولة والمدينة|البريد الإلكتروني|اسم الباقة|رسوم التأسيس]]"
+[[WA_HANDOFF|الاسم الكامل|اسم العيادة|رقم الواتساب|الدولة والمدينة|البريد الإلكتروني|اسم الباقة|رسوم التأسيس|عدد المواعيد اليومية من Q1|التخصص من Q2|سعر الجلسة من Q3|أكبر مشكلة من Q5]]"
 
-The last line MUST be the marker exactly in this format: double square brackets, "WA_HANDOFF", then a pipe (|) followed by the client's full name, a pipe, the clinic name, a pipe, the WhatsApp number, a pipe, the country and city, a pipe, the email address, a pipe, the plan name (Essential/Growth/Pro), a pipe, the setup fee amount as a number only (no $ sign), then double closing square brackets. Replace each field with the actual collected value — do NOT leave the literal words "الاسم الكامل" etc. The marker must be the very last line, with nothing after it.
+The last line MUST be the marker exactly in this format: double square brackets, "WA_HANDOFF", then a pipe (|) followed by the client's full name, a pipe, the clinic name, a pipe, the WhatsApp number, a pipe, the country and city, a pipe, the email address, a pipe, the plan name (Essential/Growth/Pro), a pipe, the setup fee amount as a number only (no $ sign), a pipe, the daily appointments number from Q1, a pipe, the specialty from Q2, a pipe, the session price from Q3, a pipe, the main problem from Q5, then double closing square brackets. Replace each field with the actual collected value — do NOT leave the literal placeholder words. The marker must be the very last line, with nothing after it.
 
 This is your FINAL message. After sending it, do NOT send any further messages — the website will show a WhatsApp button and end the conversation automatically.
 
@@ -995,7 +995,8 @@ Everything in Growth PLUS:
   let conversationHistory = [];
   let conversationEnded = false;
   let hasTrackedInitiateCheckout = false;
-  const WA_HANDOFF_RE = /\[\[WA_HANDOFF\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^\]]*)\]\]/;
+  const WA_HANDOFF_RE = /\[\[WA_HANDOFF\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^\]]*)\]\]/;
+  const SHEETS_URL = "https://script.google.com/macros/s/AKfycbxlKI5OKmvLf5Na2nul9ASpHFF2FuZ2gbKl_zZlbWtqeAH65KxgvsMDJL5TvqFA7KqfZA/exec";
   const PLAN_MONTHLY_FEE = { Essential: 497, Growth: 797, Pro: 1197 };
 
   function addMessageBubble(role, text){
@@ -1073,7 +1074,7 @@ Everything in Growth PLUS:
       conversationHistory.push({ role: 'assistant', content: reply });
 
       if(waMatch){
-        const [, collectedName, collectedClinic, collectedWhatsapp, collectedCity, collectedEmail, recommendedPlan, setupFee] = waMatch;
+        const [, collectedName, collectedClinic, collectedWhatsapp, collectedCity, collectedEmail, recommendedPlan, setupFee, appointments, specialty, sessionPrice, mainProblem] = waMatch;
         const clientData = {
           name: collectedName,
           clinicName: collectedClinic,
@@ -1082,7 +1083,11 @@ Everything in Growth PLUS:
           email: collectedEmail,
           plan: recommendedPlan,
           setupFee: setupFee,
-          monthlyFee: PLAN_MONTHLY_FEE[recommendedPlan.trim()] || ''
+          monthlyFee: PLAN_MONTHLY_FEE[recommendedPlan.trim()] || '',
+          appointments: appointments,
+          specialty: specialty,
+          sessionPrice: sessionPrice,
+          mainProblem: mainProblem
         };
         try{
           const result = await emailjs.send('clinazo_service', 'template_fmbi9jf', {
@@ -1098,6 +1103,31 @@ Everything in Growth PLUS:
           console.log('Email sent:', result);
         }catch(err){
           console.error('Email error:', err);
+        }
+
+        try{
+          await fetch(SHEETS_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              client_name: clientData.name,
+              clinic_name: clientData.clinicName,
+              client_whatsapp: clientData.whatsapp,
+              client_city: clientData.city,
+              client_email: clientData.email,
+              plan_name: clientData.plan,
+              setup_fee: clientData.setupFee,
+              monthly_fee: clientData.monthlyFee,
+              appointments: clientData.appointments,
+              specialty: clientData.specialty,
+              session_price: clientData.sessionPrice,
+              main_problem: clientData.mainProblem
+            })
+          });
+          console.log("Sheets logged");
+        } catch (err) {
+          console.error("Sheets error:", err);
         }
       }
 
