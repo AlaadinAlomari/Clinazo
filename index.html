@@ -699,6 +699,18 @@ src="https://www.facebook.com/tr?id=1033238849263575&ev=PageView&noscript=1"
   updateROI();
 
   // LAYLA CHAT WIDGET
+  const collectedData = {
+    appointments: '', specialty: '', sessionPrice: '', mainProblem: '',
+    bookingMethod: '', whatsappMessages: '', runsAds: '', receptionCount: '',
+    name: '', clinicName: '', whatsapp: '', city: '', email: ''
+  };
+  let questionIndex = 0;
+  const questionKeys = [
+    'appointments','specialty','sessionPrice','mainProblem',
+    'bookingMethod','whatsappMessages','runsAds','receptionCount',
+    'name','clinicName','whatsapp','city','email'
+  ];
+
   const LAYLA_SYSTEM_PROMPT = `You are Layla, a warm and intelligent business consultant for Clinazo.
 You are having a REAL conversation — you react naturally to each answer.
 
@@ -753,21 +765,18 @@ Turn 11 — "رقم واتساب عيادتك؟ (مع كود الدولة)" STOP
 Turn 12 — "شو مدينتك؟" STOP. Wait.
 Turn 13 — "إيميلك؟" STOP. Wait.
 
-Turn 14 — After getting email, output ONLY this marker on its own line, with each field replaced by the actual answer collected during the conversation:
-[[SEND_DATA|appointments|specialty|sessionPrice|mainProblem|bookingMethod|whatsappMessages|runsAds|receptionCount|name|clinicName|whatsapp|city|email]]
-Then write personalized analysis:
+Turn 14 — After getting email, write personalized analysis:
 - Calculate monthly loss = appointments × price × 22 × 15%
 - Reference THEIR specific answers
 - Recommend plan (1-10 appts=Essential $1,500+$497, 10-25=Growth $2,500+$797, 25+=Pro $4,000+$1,197)
 - Show setup fee + monthly fee clearly
 - End with: "وعندنا ضمان استرداد كامل 30 يوم 🛡️"
-Then output: [[WA_HANDOFF|name|clinic|whatsapp|city|email|plan|setupFee|monthlyFee]]
+Then output ONLY this marker on its own line as your final line: [[WA_HANDOFF]]
 
-JAVASCRIPT: When Layla's message contains [[SEND_DATA]],
-extract all collected conversation data and:
-1. Send EmailJS with all client data
-2. Send Google Sheets with all client data
-3. Remove [[SEND_DATA]] from displayed message
+JAVASCRIPT: When Layla's message contains [[WA_HANDOFF]], the website already
+has all the client's answers saved locally from the conversation — it sends
+them to EmailJS and Google Sheets automatically, shows a WhatsApp button, and
+removes the marker from the displayed message.
 
 HARD RULES:
 - ONE message per turn — absolute
@@ -789,8 +798,27 @@ HARD RULES:
   let conversationEnded = false;
   let hasTrackedInitiateCheckout = false;
   const SHEETS_URL = "https://script.google.com/macros/s/AKfycbxlKI5OKmvLf5Na2nul9ASpHFF2FuZ2gbKl_zZlbWtqeAH65KxgvsMDJL5TvqFA7KqfZA/exec";
-  const WA_HANDOFF_RE = /\[\[WA_HANDOFF\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^\]]*)\]\]/;
-  const SEND_DATA_RE = /\[\[SEND_DATA\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^\]]*)\]\]/;
+  const WA_HANDOFF_RE = /\[\[WA_HANDOFF\]\]/;
+  const PLAN_FEES = {
+    Essential: { setup: 1500, monthly: 497 },
+    Growth: { setup: 2500, monthly: 797 },
+    Pro: { setup: 4000, monthly: 1197 }
+  };
+
+  function extractPlanFromResponse(text){
+    const match = text.match(/\b(Essential|Growth|Pro)\b/);
+    return match ? match[1] : '';
+  }
+
+  function extractSetupFee(text){
+    const plan = extractPlanFromResponse(text);
+    return plan ? PLAN_FEES[plan].setup : '';
+  }
+
+  function extractMonthlyFee(text){
+    const plan = extractPlanFromResponse(text);
+    return plan ? PLAN_FEES[plan].monthly : '';
+  }
 
   function addMessageBubble(role, text){
     const div = document.createElement('div');
@@ -835,6 +863,12 @@ HARD RULES:
     addMessageBubble('user', text);
     conversationHistory.push({ role: 'user', content: text });
     chatInput.value = '';
+
+    if(questionIndex < 13){
+      collectedData[questionKeys[questionIndex]] = text;
+      questionIndex++;
+    }
+
     showTyping();
 
     try{
@@ -860,34 +894,18 @@ HARD RULES:
 
       conversationHistory.push({ role: 'assistant', content: reply });
 
-      const sendDataMatch = reply.match(SEND_DATA_RE);
       const waMatch = reply.match(WA_HANDOFF_RE);
 
       let displayText = reply;
-      if(sendDataMatch) displayText = displayText.replace(sendDataMatch[0], '');
       if(waMatch) displayText = displayText.replace(waMatch[0], '');
       displayText = displayText.trim();
 
-      if(sendDataMatch && waMatch){
-        const values = sendDataMatch;
-        const clientData = {
-          appointments: values[1],
-          specialty: values[2],
-          sessionPrice: values[3],
-          mainProblem: values[4],
-          bookingMethod: values[5],
-          whatsappMessages: values[6],
-          runsAds: values[7],
-          receptionCount: values[8],
-          name: values[9],
-          clinicName: values[10],
-          whatsapp: values[11],
-          city: values[12],
-          email: values[13],
-          plan: waMatch[6],
-          setupFee: waMatch[7],
-          monthlyFee: waMatch[8]
-        };
+      if(waMatch){
+        const clientData = Object.assign({}, collectedData, {
+          plan: extractPlanFromResponse(reply),
+          setupFee: extractSetupFee(reply),
+          monthlyFee: extractMonthlyFee(reply)
+        });
 
         try{
           const result = await emailjs.send('clinazo_service', 'template_fmbi9jf', {
