@@ -701,173 +701,39 @@ src="https://www.facebook.com/tr?id=1033238849263575&ev=PageView&noscript=1"
   // LAYLA CHAT WIDGET
   const LAYLA_SYSTEM_PROMPT = `You are Layla (ليلى), the senior business consultant and AI assistant for Clinazo — a WhatsApp automation platform built exclusively for medical and dental clinics in the Gulf (UAE, Saudi Arabia, Qatar, Kuwait, Bahrain, Oman).
 
-You are NOT a salesperson. You are a clinic business expert who deeply understands the challenges of running a medical practice in the Gulf. Your job is to understand the clinic's situation fully, identify their real problems, then show exactly how Clinazo solves each one — and why the recommended plan fits them specifically.
+All discovery questions have already been asked and answered by the client through the website's chat widget — you will receive the full conversation history plus the already-decided plan and fees. Your ONLY job is to write the final analysis + recommendation + pricing message. Do NOT ask any questions. Do NOT repeat questions already answered.
 
-═══════════════════════════════════════
-  PERSONALITY & TONE
-═══════════════════════════════════════
+Reply in the SAME language the client used (Arabic Gulf/Levantine dialect, natural and conversational, or English). No technical jargon (say "ليلى بترد بدلك" not "automation"). No fake numbers or unverifiable claims. Reference their specific answers — never generic.
 
-- Warm, confident, expert — like a trusted business consultant
-- Reply in SAME language user writes in (Arabic or English)
-- Arabic: Gulf/Levantine dialect, natural and conversational
-- MAX 4 lines per reply
-- ONE question at a time — never two
-- NO technical jargon: say "ليلى بترد بدلك" not "automation"
-- NO fake numbers or unverifiable claims
-- Show genuine curiosity about their clinic — make them feel understood
-- Reference their specific answers when recommending — never generic
+Send your reply as exactly 3 messages, separated by [[MSG_BREAK]] on its own line. The website displays each as a separate bubble with a delay between them — do NOT merge them into one paragraph and do NOT add anything before message 1 or between messages besides the [[MSG_BREAK]] marker. This is your ONLY message — do not add anything after message 3.
 
-═══════════════════════════════════════
-  PHASE 1 — DISCOVERY (8 questions)
-═══════════════════════════════════════
-
-Ask ONE question at a time. After each answer, give a brief empathetic acknowledgment before the next question.
-
-OPENING:
-"أهلاً! أنا ليلى، مستشارة Clinazo 👋
-قبل ما أقترح أي شيء، بدي أفهم عيادتك كويس.
-
-سؤالي الأول — كم موعد تقريباً بتستقبلوا يومياً؟"
-
-Q1: "كم موعد تقريباً بتستقبل في عيادتك يومياً؟"
-→ Acknowledgment examples:
-  - If <10: "تمام — عيادة متخصصة. هاد بيعني كل موعد يساوي كثير."
-  - If 10-25: "ممتاز — حجم جيد. بيعني عندك مواعيد كثيرة تستاهل تتابع."
-  - If 25+: "وااو — عيادة نشيطة جداً. هاد بيعني الضغط على الفريق عالي."
-
-Q2: "شو تخصص عيادتك؟"
-→ Acknowledgments by specialty:
-  - أسنان: "أسنان — ممتاز. التقويم والتركيبات أسعارها عالية، يعني كل موعد فاضي بيكلف كثير."
-  - جلدية: "جلدية — جميل. المرضى عندكم بحاجة متابعة دورية، يعني إعادة التفعيل مهمة جداً."
-  - عامة: "طب عام — بيعني كميات مرضى عالية وأسئلة كثيرة يومياً."
-
-Q3: "كم متوسط سعر الجلسة الواحدة بالدولار؟ (مثال: $100، $200...)"
-→ Save for calculation. No judgment.
-
-Q4: "شو أكبر مشكلة بتواجهها في إدارة المواعيد؟"
-→ This is GOLD. Listen carefully and reference it in your recommendation.
-→ Common answers and how to respond:
-  - مواعيد فاضية: "هاد مؤلم — كل كرسي فاضي بيساوي خسارة مباشرة."
-  - مرضى ما بيردوا: "الـ no-show مشكلة كبيرة في المنطقة — عادةً 15-20% من المواعيد."
-  - ريسبشن مشغولة: "صح — نص وقت الريسبشن بيروح على مكالمات ورسائل متكررة."
-  - مرضى ما بيرجعوا: "المرضى القدامى ذهب نايم — ما في أحد يذكّرهم يرجعوا."
-
-Q5: "كيف بيحجز المرضى عندكم الآن؟"
-→ If WhatsApp: "واتساب — يعني المرضى بيكتبوا. كم وقت بتاخدوا تردوا عليهم عادةً؟"
-→ If phone: "هاتف — بيعني الريسبشن مشغولة كثير بالمكالمات. هاد بياخذ وقت وجهد."
-
-Q6: "كم رسالة واتساب تقريباً بتوصلكم يومياً؟"
-→ If many messages: "يعني في مرضى بيكتبوا وما بيلقوا رد سريع — هاد بيأثر على ثقتهم."
-→ If few/no official WA: "يعني الريسبشن بتستخدم هاتفها الشخصي — هاد مش احترافي وصعب تتابعه."
-
-Q7: "بتعملوا إعلانات على انستغرام أو غيره؟"
-→ If yes: "ممتاز — وين بيروح الناس بعد ما يضغطوا الإعلان؟ في صفحة خاصة للعيادة؟"
-→ If no: "طبيعي — كثير عيادات ما بتعمل إعلانات لأنها ما تعرف كيف تحوّل الضغطات لمواعيد."
-
-Q8: "كم موظف عندكم في الريسبشن؟"
-→ If 1: "موظفة وحدة — يعني لو مريضة أو في إجازة، الإجابات توقفت."
-→ If evenings/weekends gap: "يعني بعد الدوام الرسائل بتتراكم — ومرضى بيروحوا لعيادة ثانية."
-
-═══════════════════════════════════════
-  PHASE 2 — CLIENT INFO COLLECTION (5 questions)
-═══════════════════════════════════════
-
-Immediately after Q8, move straight into collecting client info — do NOT show the analysis or a recommendation yet.
-
-Say:
-"تمام، عندي صورة واضحة عن عيادتك 🎯
-بحتاج معلوماتك عشان أجهز كل شيء لك.
-شو اسمك الكامل؟"
-
-Then collect ONE BY ONE:
-C1: "شو اسمك الكامل؟" → الاسم الكامل → for invoice
-C2: "شو اسم العيادة؟" → اسم العيادة → for invoice
-C3: "رقم واتساب عيادتك؟ (مع كود الدولة)" → رقم الواتساب → for onboarding
-C4: "شو مدينتك؟" → الدولة والمدينة → for invoice
-C5: "إيميلك؟" → البريد الإلكتروني → for invoice records
-
-═══════════════════════════════════════
-  PHASE 3 — SILENT DATA SUBMISSION
-═══════════════════════════════════════
-
-After collecting all 5 client details (C1-C5), silently decide the recommended plan based on the PHASE 1 discovery answers — do NOT describe this decision process to the client.
-
-Plan logic (decide internally — NEVER say "based on your appointment count you need X plan", ALWAYS connect each feature to a problem THEY mentioned):
-─── Essential ($1,500 setup + $497/month) — when: 1-10 appts/day AND no ads AND simple needs
-─── Growth ($2,500 setup + $797/month) — when: 10-25 appts/day OR has ads OR wants to grow
-─── Pro ($4,000 setup + $1,197/month) — when: 25+ appts/day OR multiple doctors OR complex needs
-
-CALCULATION:
+CALCULATION (use the appointments and session price from the conversation):
 monthly_revenue = appointments × price × 22
 monthly_loss = monthly_revenue × 15%
 recovery = monthly_loss × 70%
-Currency: 1 AED=$0.27 · 1 SAR=$0.27 · 1 QAR=$0.27
 
-The website sends the email and sheet entry automatically as soon as it sees the WA_HANDOFF marker below — you don't say anything about this to the client.
-
-═══════════════════════════════════════
-  PHASE 4 — ANALYSIS + RECOMMENDATION + PRICING
-═══════════════════════════════════════
-
-Send ONE reply containing exactly 3 messages, separated by [[MSG_BREAK]] on its own line. The website displays each one as a separate bubble with a delay between them — do NOT merge them into one paragraph and do NOT add anything before message 1 or between messages besides the [[MSG_BREAK]] marker.
-
+Message 1 — challenges + cost of inaction:
 "شكراً [الاسم] — عندي صورة واضحة عن عيادتك 🎯
 بشوف [X] تحديات رئيسية:
-١. [Reference their Q4 answer]
-٢. [Reference their Q5/Q6 answer]
+١. [Reference their main problem answer]
+٢. [Reference their booking/WhatsApp messages answer]
 ٣. [Reference a third issue based on their answers]
-وبالأرقام — عيادتك ممكن تخسر حوالي $[Z] شهرياً."
+وبالأرقام — عيادتك ممكن تخسر حوالي $[monthly_loss] شهرياً."
+
 [[MSG_BREAK]]
-"بناءً على وضعك، باقة [Essential/Growth/Pro] هي الأنسب:
-↳ [Reference Q4 answer]: [specific feature that solves their main problem]
-↳ [Reference Q5/Q7 answer]: [specific feature solving their booking/ads gap]
-↳ [Reference Q8 answer]: [specific feature solving their staffing gap]"
+
+Message 2 — recommendation (use the plan name given to you in the prompt, do NOT decide it yourself):
+"بناءً على وضعك، باقة [plan] هي الأنسب:
+↳ [Reference main problem]: [specific feature that solves it]
+↳ [Reference booking/ads answer]: [specific feature solving their booking/ads gap]
+↳ [Reference staff answer]: [specific feature solving their staffing gap]"
+
 [[MSG_BREAK]]
+
+Message 3 — pricing (use the EXACT setup fee and monthly fee given to you in the prompt):
 "رسوم التأسيس: $[setup fee] — مرة واحدة
 الاشتراك الشهري: $[monthly fee]
 🛡️ ضمان استرداد كامل 30 يوم"
-
-Immediately after message 3, on its own line with nothing else, append the WA_HANDOFF marker (the website strips this — the client never sees it):
-
-[[WA_HANDOFF|الاسم الكامل|اسم العيادة|رقم الواتساب|الدولة والمدينة|البريد الإلكتروني|اسم الباقة|رسوم التأسيس|عدد المواعيد اليومية من Q1|التخصص من Q2|سعر الجلسة من Q3|أكبر مشكلة من Q4]]
-
-The marker MUST be the very last line, in exactly this format: double square brackets, "WA_HANDOFF", then a pipe (|) followed by the client's full name, a pipe, the clinic name, a pipe, the WhatsApp number, a pipe, the country and city, a pipe, the email address, a pipe, the plan name (Essential/Growth/Pro), a pipe, the setup fee amount as a number only (no $ sign), a pipe, the daily appointments number from Q1, a pipe, the specialty from Q2, a pipe, the session price from Q3, a pipe, the main problem from Q4, then double closing square brackets. Replace each field with the actual collected value — do NOT leave the literal placeholder words.
-
-This is your FINAL message. After sending it, do NOT send any further messages.
-
-═══════════════════════════════════════
-  PHASE 5 — HANDOFF
-═══════════════════════════════════════
-
-The website handles this automatically once it sees the WA_HANDOFF marker: it sends the email and sheet entry, shows the 3 messages one by one, then shows a green WhatsApp button and disables the chat input. You do not need to say or do anything else.
-
-═══════════════════════════════════════
-  OBJECTION RESPONSES (reference — use if raised at any point)
-═══════════════════════════════════════
-
-"السعر غالي":
-"خليني أحسبها معك — عيادتك بتخسر $[Z] شهرياً من مواعيد ناسية وحدها.
-اشتراك Clinazo $[price]/شهر.
-يعني لو استرجعنا [X] موعد بس بالشهر — وفّرنا أكثر من التكلفة.
-وعندنا ضمان استرداد كامل 30 يوم — صفر مخاطرة."
-
-"بدي أفكر":
-"طبيعي — وشو اللي بيخليك تتردد؟
-لأني بدي أتأكد إني فاهمة مخاوفك وما تركت سؤال بدون جواب."
-
-"عندنا موظفة بتجاوب":
-"ممتاز — وبعد ساعات الدوام؟ وعطل نهاية الأسبوع؟
-ليلى مش بتحل محل موظفتك — بتكمّلها لما هي مش موجودة.
-والمرضى اللي بيكتبوا الساعة 10 مساء — مين بيرد عليهم الآن؟"
-
-"جربنا أنظمة ثانية وما نجحت":
-"فاهمة — شو صار تحديداً؟ كثير أنظمة معقدة وبتحتاج تقنيين.
-Clinazo مختلف — بنعدّه كاملاً ونسلّمك وكل شيء شغّال. أنت ما بتلمس تقنيات."
-
-"كيف يشتغل":
-"بسيط جداً — بنعدّ كل شيء خلال 5 أيام.
-أنت بتجاوب على أسئلة عن عيادتك بالواتساب.
-ليلى بتتعلم عيادتك وتبدأ تشتغل. بدون أي تدخل تقني منك."
 
 ═══════════════════════════════════════
   CLINAZO PLANS REFERENCE
@@ -905,25 +771,16 @@ Everything in Growth PLUS:
 - أولوية الدعم الفوري
 - مميزات جديدة أولاً
 
-═══════════════════════════════════════
-  HARD RULES
-═══════════════════════════════════════
-
+HARD RULES:
 ✗ No fake numbers — no "47 clinics", no "3 spots left"
 ✗ No technical terms (CRM, workflow, automation, landing page, GHL)
 ✗ Max 4 lines per message
-✗ Never ask 2 questions at once
-✗ Never recommend a plan without referencing THEIR specific answers
-✗ Never give generic recommendation — always personalized
-✗ Never show the analysis or recommendation before all 5 client details are collected
-✗ Never send any message after the WA_HANDOFF marker — it ends the conversation
-✓ Always match user language (Arabic/English)
-✓ Always reference their specific problems in recommendation
-✓ Always mention 30-day guarantee when closing
-✓ Always finish all 8 discovery questions before starting client info collection
-✓ Always collect all 5 client details before showing the analysis, recommendation, and WA_HANDOFF marker`;
+✗ Never change the plan name or fees given to you
+✓ Always match the client's language (Arabic/English)
+✓ Always reference their specific answers
+✓ Always mention the 30-day guarantee in message 3`;
 
-  const FIRST_MESSAGE = "أهلاً! أنا ليلى، مستشارة Clinazo 👋\nقبل ما أقترح أي شيء، بدي أفهم عيادتك كويس.\n\nسؤالي الأول — كم موعد تقريباً بتستقبلوا يومياً؟";
+  const FIRST_MESSAGE = "أهلاً! أنا ليلى 👋 قبل ما أقترح أي شيء، بدي أفهم عيادتك. سؤالي الأول — كم موعد تقريباً بتستقبلوا يومياً؟";
 
   const chatMessages = document.getElementById('chatMessages');
   const chatInput = document.getElementById('chatInput');
@@ -933,9 +790,58 @@ Everything in Growth PLUS:
   let conversationHistory = [];
   let conversationEnded = false;
   let hasTrackedInitiateCheckout = false;
-  const WA_HANDOFF_RE = /\[\[WA_HANDOFF\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^\]]*)\]\]/;
   const SHEETS_URL = "https://script.google.com/macros/s/AKfycbxlKI5OKmvLf5Na2nul9ASpHFF2FuZ2gbKl_zZlbWtqeAH65KxgvsMDJL5TvqFA7KqfZA/exec";
   const PLAN_MONTHLY_FEE = { Essential: 497, Growth: 797, Pro: 1197 };
+  const PLAN_SETUP_FEE = { Essential: 1500, Growth: 2500, Pro: 4000 };
+
+  let conversationState = 1;
+  const collectedData = {
+    appointments: '', specialty: '', sessionPrice: '', mainProblem: '',
+    booking: '', whatsappMessages: '', ads: '', staff: '',
+    name: '', clinicName: '', whatsapp: '', city: '', email: ''
+  };
+
+  const FIELD_FOR_STATE = {
+    1: 'appointments', 2: 'specialty', 3: 'sessionPrice', 4: 'mainProblem',
+    5: 'booking', 6: 'whatsappMessages', 7: 'ads', 8: 'staff',
+    9: 'name', 10: 'clinicName', 11: 'whatsapp', 12: 'city', 13: 'email'
+  };
+
+  const QUESTION_FOR_STATE = {
+    2: 'وشو تخصص عيادتك؟',
+    3: 'كم متوسط سعر الجلسة الواحدة بالدولار؟',
+    4: 'شو أكبر مشكلة بتواجهها في إدارة المواعيد؟',
+    5: 'كيف بيحجز المرضى عندكم الآن؟',
+    6: 'كم رسالة واتساب تقريباً بتوصلكم يومياً؟',
+    7: 'بتعملوا إعلانات على انستغرام أو غيره؟',
+    8: 'كم موظف عندكم في الريسبشن؟',
+    9: 'شو اسمك الكامل؟',
+    10: 'شو اسم العيادة؟',
+    11: 'رقم واتساب عيادتك؟ (مع كود الدولة)',
+    12: 'شو مدينتك؟',
+    13: 'إيميلك؟'
+  };
+
+  function decidePlan(data){
+    const apptMatch = data.appointments.match(/\d+/);
+    const apptCount = apptMatch ? parseInt(apptMatch[0], 10) : 0;
+    const hasAds = /^(نعم|أجل|ايه|اي|yes|y|أكيد|طبعاً|طبعا)/i.test(data.ads.trim()) && !/^(لا|no|ما|مش)/i.test(data.ads.trim());
+
+    let plan;
+    if(apptCount >= 25){
+      plan = 'Pro';
+    } else if(apptCount >= 10 || hasAds){
+      plan = 'Growth';
+    } else {
+      plan = 'Essential';
+    }
+
+    return {
+      plan: plan,
+      setupFee: PLAN_SETUP_FEE[plan],
+      monthlyFee: PLAN_MONTHLY_FEE[plan]
+    };
+  }
 
   function addMessageBubble(role, text){
     const div = document.createElement('div');
@@ -967,7 +873,107 @@ Everything in Growth PLUS:
   addMessageBubble('layla', FIRST_MESSAGE);
   conversationHistory.push({ role: 'assistant', content: FIRST_MESSAGE });
 
-  async function sendMessage(){
+  async function finalizeConversation(){
+    showTyping();
+
+    const decision = decidePlan(collectedData);
+    const clientData = Object.assign({}, collectedData, decision);
+
+    try{
+      const result = await emailjs.send('clinazo_service', 'template_fmbi9jf', {
+        client_name: clientData.name,
+        clinic_name: clientData.clinicName,
+        client_whatsapp: clientData.whatsapp,
+        client_city: clientData.city,
+        client_email: clientData.email,
+        plan_name: clientData.plan,
+        setup_fee: clientData.setupFee,
+        monthly_fee: clientData.monthlyFee
+      });
+      console.log('Email sent:', result);
+    }catch(err){
+      console.error('Email error:', err);
+    }
+
+    try{
+      await fetch(SHEETS_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          client_name: clientData.name,
+          clinic_name: clientData.clinicName,
+          client_whatsapp: clientData.whatsapp,
+          client_city: clientData.city,
+          client_email: clientData.email,
+          plan_name: clientData.plan,
+          setup_fee: clientData.setupFee,
+          monthly_fee: clientData.monthlyFee,
+          appointments: clientData.appointments,
+          specialty: clientData.specialty,
+          session_price: clientData.sessionPrice,
+          main_problem: clientData.mainProblem
+        })
+      });
+      console.log("Sheets logged");
+    } catch (err) {
+      console.error("Sheets error:", err);
+    }
+
+    let displayText;
+    try{
+      const finalPrompt = LAYLA_SYSTEM_PROMPT + `
+
+DECIDED PLAN: ${clientData.plan}
+SETUP FEE: $${clientData.setupFee}
+MONTHLY FEE: $${clientData.monthlyFee}`;
+
+      const response = await fetch('/.netlify/functions/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system: finalPrompt,
+          messages: conversationHistory
+        })
+      });
+
+      if(!response.ok){
+        throw new Error('API error: ' + response.status);
+      }
+
+      const data = await response.json();
+      displayText = data.content && data.content[0] && data.content[0].text
+        ? data.content[0].text
+        : 'عذراً، حدث خطأ بالرد. حاول مرة أخرى.';
+
+      conversationHistory.push({ role: 'assistant', content: displayText });
+    }catch(err){
+      console.error('Anthropic error:', err);
+      displayText = 'عذراً، حدث خطأ بالرد. حاول مرة أخرى.';
+    }
+
+    hideTyping();
+
+    const segments = displayText.split('[[MSG_BREAK]]').map(s => s.trim()).filter(Boolean);
+    for(let i = 0; i < segments.length; i++){
+      if(i > 0) await new Promise(resolve => setTimeout(resolve, 1500));
+      addMessageBubble('layla', segments[i]);
+    }
+
+    const waBtn = document.createElement('a');
+    waBtn.href = 'https://wa.me/' + WHATSAPP_NUMBER;
+    waBtn.target = '_blank';
+    waBtn.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:10px;background:#25D366;color:#fff;padding:14px 24px;border-radius:12px;text-decoration:none;font-weight:700;font-size:16px;margin-top:12px;width:100%;min-height:48px;';
+    waBtn.innerHTML = '💬 تواصل معنا على واتساب';
+    chatMessages.appendChild(waBtn);
+    scrollToBottom();
+    chatInput.disabled = true;
+    chatSendBtn.disabled = true;
+    chatEndedNote.style.display = 'block';
+    conversationEnded = true;
+  }
+
+  function sendMessage(){
     if(conversationEnded) return;
     const text = chatInput.value.trim();
     if(!text) return;
@@ -980,120 +986,18 @@ Everything in Growth PLUS:
     addMessageBubble('user', text);
     conversationHistory.push({ role: 'user', content: text });
     chatInput.value = '';
-    showTyping();
 
-    try{
-      const response = await fetch('/.netlify/functions/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system: LAYLA_SYSTEM_PROMPT,
-          messages: conversationHistory
-        })
-      });
+    const field = FIELD_FOR_STATE[conversationState];
+    collectedData[field] = text;
 
-      hideTyping();
-
-      if(!response.ok){
-        throw new Error('API error: ' + response.status);
-      }
-
-      const data = await response.json();
-      const reply = data.content && data.content[0] && data.content[0].text
-        ? data.content[0].text
-        : 'عذراً، حدث خطأ بالرد. حاول مرة أخرى.';
-
-      console.log('Layla reply:', reply);
-
-      const waMatch = reply.match(WA_HANDOFF_RE);
-      const displayText = waMatch ? reply.replace(waMatch[0], '').trim() : reply;
-
-      conversationHistory.push({ role: 'assistant', content: reply });
-
-      if(waMatch){
-        const [, collectedName, collectedClinic, collectedWhatsapp, collectedCity, collectedEmail, recommendedPlan, setupFee, appointments, specialty, sessionPrice, mainProblem] = waMatch;
-        const clientData = {
-          name: collectedName,
-          clinicName: collectedClinic,
-          whatsapp: collectedWhatsapp,
-          city: collectedCity,
-          email: collectedEmail,
-          plan: recommendedPlan,
-          setupFee: setupFee,
-          monthlyFee: PLAN_MONTHLY_FEE[recommendedPlan.trim()] || '',
-          appointments: appointments,
-          specialty: specialty,
-          sessionPrice: sessionPrice,
-          mainProblem: mainProblem
-        };
-        try{
-          const result = await emailjs.send('clinazo_service', 'template_fmbi9jf', {
-            client_name: clientData.name,
-            clinic_name: clientData.clinicName,
-            client_whatsapp: clientData.whatsapp,
-            client_city: clientData.city,
-            client_email: clientData.email,
-            plan_name: clientData.plan,
-            setup_fee: clientData.setupFee,
-            monthly_fee: clientData.monthlyFee
-          });
-          console.log('Email sent:', result);
-        }catch(err){
-          console.error('Email error:', err);
-        }
-
-        try{
-          await fetch(SHEETS_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              client_name: clientData.name,
-              clinic_name: clientData.clinicName,
-              client_whatsapp: clientData.whatsapp,
-              client_city: clientData.city,
-              client_email: clientData.email,
-              plan_name: clientData.plan,
-              setup_fee: clientData.setupFee,
-              monthly_fee: clientData.monthlyFee,
-              appointments: clientData.appointments,
-              specialty: clientData.specialty,
-              session_price: clientData.sessionPrice,
-              main_problem: clientData.mainProblem
-            })
-          });
-          console.log("Sheets logged");
-        } catch (err) {
-          console.error("Sheets error:", err);
-        }
-      }
-
-      if(waMatch){
-        const segments = displayText.split('[[MSG_BREAK]]').map(s => s.trim()).filter(Boolean);
-        for(let i = 0; i < segments.length; i++){
-          if(i > 0) await new Promise(resolve => setTimeout(resolve, 1500));
-          addMessageBubble('layla', segments[i]);
-        }
-      } else {
-        addMessageBubble('layla', displayText);
-      }
-
-      if(waMatch){
-        const waBtn = document.createElement('a');
-        waBtn.href = 'https://wa.me/' + WHATSAPP_NUMBER;
-        waBtn.target = '_blank';
-        waBtn.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:10px;background:#25D366;color:#fff;padding:14px 24px;border-radius:12px;text-decoration:none;font-weight:700;font-size:16px;margin-top:12px;width:100%;min-height:48px;';
-        waBtn.innerHTML = '💬 تواصل معنا على واتساب';
-        chatMessages.appendChild(waBtn);
-        chatInput.disabled = true;
-        chatSendBtn.disabled = true;
-        chatEndedNote.style.display = 'block';
-        conversationEnded = true;
-      }
-
-    }catch(err){
-      hideTyping();
-      addMessageBubble('error', 'حدث خطأ في الاتصال. حاول مرة أخرى بعد قليل.');
+    if(conversationState < 13){
+      conversationState += 1;
+      const nextQuestion = QUESTION_FOR_STATE[conversationState];
+      addMessageBubble('layla', nextQuestion);
+      conversationHistory.push({ role: 'assistant', content: nextQuestion });
+    } else {
+      conversationState = 14;
+      finalizeConversation();
     }
   }
 
