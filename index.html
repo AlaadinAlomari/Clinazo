@@ -699,6 +699,18 @@ src="https://www.facebook.com/tr?id=1033238849263575&ev=PageView&noscript=1"
   updateROI();
 
   // LAYLA CHAT WIDGET
+  const collectedData = {
+    appointments: '', specialty: '', sessionPrice: '', mainProblem: '',
+    bookingMethod: '', whatsappMessages: '', runsAds: '', receptionCount: '',
+    name: '', clinicName: '', whatsapp: '', city: '', email: ''
+  };
+  let questionIndex = 0;
+  const questionKeys = [
+    'appointments','specialty','sessionPrice','mainProblem',
+    'bookingMethod','whatsappMessages','runsAds','receptionCount',
+    'name','clinicName','whatsapp','city','email'
+  ];
+
   const LAYLA_SYSTEM_PROMPT = `You are Layla, a warm and intelligent business consultant for Clinazo.
 You are having a REAL conversation — you react naturally to each answer.
 
@@ -753,21 +765,18 @@ Turn 11 — "رقم واتساب عيادتك؟ (مع كود الدولة)" STOP
 Turn 12 — "شو مدينتك؟" STOP. Wait.
 Turn 13 — "إيميلك؟" STOP. Wait.
 
-Turn 14 — After getting email, output ONLY this marker on its own line:
-[[SEND_DATA]]
-Then write personalized analysis:
+Turn 14 — After getting email, write personalized analysis:
 - Calculate monthly loss = appointments × price × 22 × 15%
 - Reference THEIR specific answers
 - Recommend plan (1-10 appts=Essential $1,500+$497, 10-25=Growth $2,500+$797, 25+=Pro $4,000+$1,197)
 - Show setup fee + monthly fee clearly
 - End with: "وعندنا ضمان استرداد كامل 30 يوم 🛡️"
-Then output: [[WA_HANDOFF|name|clinic|whatsapp|city|email|plan|setupFee|monthlyFee]]
+Then output ONLY this marker on its own line as your final line: [[WA_HANDOFF]]
 
-JAVASCRIPT: When Layla's message contains [[SEND_DATA]],
-extract all collected conversation data and:
-1. Send EmailJS with all client data
-2. Send Google Sheets with all client data
-3. Remove [[SEND_DATA]] from displayed message
+JAVASCRIPT: When Layla's message contains [[WA_HANDOFF]], the website already
+has all the client's answers saved locally from the conversation — it sends
+them to EmailJS and Google Sheets automatically, shows a WhatsApp button, and
+removes the marker from the displayed message.
 
 HARD RULES:
 - ONE message per turn — absolute
@@ -789,7 +798,7 @@ HARD RULES:
   let conversationEnded = false;
   let hasTrackedInitiateCheckout = false;
   const SHEETS_URL = "https://script.google.com/macros/s/AKfycbxlKI5OKmvLf5Na2nul9ASpHFF2FuZ2gbKl_zZlbWtqeAH65KxgvsMDJL5TvqFA7KqfZA/exec";
-  const WA_HANDOFF_RE = /\[\[WA_HANDOFF\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|([^\]]*)\]\]/;
+  const WA_HANDOFF_RE = /\[\[WA_HANDOFF\]\]/;
 
   function addMessageBubble(role, text){
     const div = document.createElement('div');
@@ -834,10 +843,16 @@ HARD RULES:
     addMessageBubble('user', text);
     conversationHistory.push({ role: 'user', content: text });
     chatInput.value = '';
+
+    if(questionIndex < 13){
+      collectedData[questionKeys[questionIndex]] = text;
+      questionIndex++;
+    }
+
     showTyping();
 
     try{
-      const response = await fetch('/.netlify/functions/chat', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -859,27 +874,24 @@ HARD RULES:
 
       conversationHistory.push({ role: 'assistant', content: reply });
 
-      const hasSendData = reply.includes('[[SEND_DATA]]');
       const waMatch = reply.match(WA_HANDOFF_RE);
 
-      let displayText = reply.replace('[[SEND_DATA]]', '');
+      let displayText = reply;
       if(waMatch) displayText = displayText.replace(waMatch[0], '');
       displayText = displayText.trim();
 
-      if(hasSendData && waMatch){
-        const [, name, clinicName, whatsapp, city, email, plan, setupFee, monthlyFee] = waMatch;
-        const clientData = { name, clinicName, whatsapp, city, email, plan, setupFee, monthlyFee };
-
+      if(waMatch){
         try{
           const result = await emailjs.send('clinazo_service', 'template_fmbi9jf', {
-            client_name: clientData.name,
-            clinic_name: clientData.clinicName,
-            client_whatsapp: clientData.whatsapp,
-            client_city: clientData.city,
-            client_email: clientData.email,
-            plan_name: clientData.plan,
-            setup_fee: clientData.setupFee,
-            monthly_fee: clientData.monthlyFee
+            client_name: collectedData.name,
+            clinic_name: collectedData.clinicName,
+            client_whatsapp: collectedData.whatsapp,
+            client_city: collectedData.city,
+            client_email: collectedData.email,
+            appointments: collectedData.appointments,
+            specialty: collectedData.specialty,
+            session_price: collectedData.sessionPrice,
+            main_problem: collectedData.mainProblem
           });
           console.log('Email sent:', result);
         }catch(err){
@@ -892,14 +904,19 @@ HARD RULES:
             mode: "no-cors",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              client_name: clientData.name,
-              clinic_name: clientData.clinicName,
-              client_whatsapp: clientData.whatsapp,
-              client_city: clientData.city,
-              client_email: clientData.email,
-              plan_name: clientData.plan,
-              setup_fee: clientData.setupFee,
-              monthly_fee: clientData.monthlyFee
+              client_name: collectedData.name,
+              clinic_name: collectedData.clinicName,
+              client_whatsapp: collectedData.whatsapp,
+              client_city: collectedData.city,
+              client_email: collectedData.email,
+              appointments: collectedData.appointments,
+              specialty: collectedData.specialty,
+              session_price: collectedData.sessionPrice,
+              main_problem: collectedData.mainProblem,
+              booking_method: collectedData.bookingMethod,
+              whatsapp_messages: collectedData.whatsappMessages,
+              runs_ads: collectedData.runsAds,
+              receptionist_count: collectedData.receptionCount
             })
           });
           console.log("Sheets logged");
@@ -911,8 +928,15 @@ HARD RULES:
       addMessageBubble('layla', displayText);
 
       if(waMatch){
+        const waMsg = encodeURIComponent(
+          "مرحباً Clinazo 🏥\n\n" +
+          "اسمي: " + collectedData.name + "\n" +
+          "العيادة: " + collectedData.clinicName + "\n" +
+          "الواتساب: " + collectedData.whatsapp + "\n\n" +
+          "أريد المتابعة ✅"
+        );
         const waBtn = document.createElement('a');
-        waBtn.href = 'https://wa.me/' + WHATSAPP_NUMBER;
+        waBtn.href = 'https://wa.me/97431063816?text=' + waMsg;
         waBtn.target = '_blank';
         waBtn.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:10px;background:#25D366;color:#fff;padding:14px 24px;border-radius:12px;text-decoration:none;font-weight:700;font-size:16px;margin-top:12px;width:100%;min-height:48px;';
         waBtn.innerHTML = '💬 تواصل معنا على واتساب';
