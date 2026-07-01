@@ -870,6 +870,7 @@ HARD RULES:
 
     if(questionIndex < 13){
       collectedData[questionKeys[questionIndex]] = text;
+      console.log('Saved:', questionKeys[questionIndex], '=', text, '| index was:', questionIndex);
       questionIndex++;
     }
 
