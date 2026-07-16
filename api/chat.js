@@ -175,14 +175,31 @@ export default async function handler(req, res) {
         messages: sanitized
       })
     });
-  } catch (_) {
+  } catch (err) {
+    console.error('[chat] upstream fetch failed:', err.message);
     return res.status(502).json({ error: 'Upstream request failed' });
   }
 
   if (!anthropicRes.ok) {
+    console.error('[chat] upstream returned', anthropicRes.status);
     return res.status(502).json({ error: 'Upstream error' });
   }
 
-  const data = await anthropicRes.json();
-  return res.status(200).json(data);
+  let data;
+  try {
+    data = await anthropicRes.json();
+  } catch (err) {
+    console.error('[chat] failed to parse upstream response:', err.message);
+    return res.status(502).json({ error: 'Upstream error' });
+  }
+
+  // Project only the reply text — never forward model name, message ID,
+  // token usage counts, stop reason, or any other internal API metadata.
+  const text = data?.content?.[0]?.text;
+  if (typeof text !== 'string' || text.length === 0) {
+    console.error('[chat] unexpected upstream shape:', JSON.stringify(data).slice(0, 200));
+    return res.status(502).json({ error: 'Upstream error' });
+  }
+
+  return res.status(200).json({ text });
 }

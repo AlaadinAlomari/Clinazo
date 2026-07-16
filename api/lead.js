@@ -61,20 +61,22 @@ export default async function handler(req, res) {
   const city      = sanitize(body.client_city);
   const email     = sanitize(body.client_email);
 
+  // Generic client response for all validation failures — field-specific
+  // messages would reveal the validation rule set to API scanners.
   if (!name || /^\d+$/.test(name.trim())) {
-    return res.status(400).json({ error: 'Invalid name' });
+    return res.status(400).json({ error: 'Bad request' });
   }
   if (clinic.trim().length < 2) {
-    return res.status(400).json({ error: 'Invalid clinic name' });
+    return res.status(400).json({ error: 'Bad request' });
   }
   if (whatsapp.replace(/\D/g, '').length < 8) {
-    return res.status(400).json({ error: 'Invalid WhatsApp number' });
+    return res.status(400).json({ error: 'Bad request' });
   }
   if (!city.trim() || /^\d+$/.test(city.trim())) {
-    return res.status(400).json({ error: 'Invalid city' });
+    return res.status(400).json({ error: 'Bad request' });
   }
   if (!email.includes('@') || email.trim().length < 5) {
-    return res.status(400).json({ error: 'Invalid email' });
+    return res.status(400).json({ error: 'Bad request' });
   }
 
   // Build sanitized params from the allow-listed field set only.
@@ -104,8 +106,8 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify(emailPayload)
       });
-    } catch (_) {
-      // Email failure is non-fatal — lead is still logged to Sheets.
+    } catch (err) {
+      console.error('[lead] email send failed:', err.message);
     }
   }
 
@@ -117,8 +119,8 @@ export default async function handler(req, res) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(params)
       });
-    } catch (_) {
-      // Sheets failure is non-fatal.
+    } catch (err) {
+      console.error('[lead] sheets log failed:', err.message);
     }
   }
 

@@ -884,12 +884,13 @@ HARD RULES:
       hideTyping();
 
       if(!response.ok){
-        throw new Error('API error: ' + response.status);
+        addMessageBubble('error', 'حدث خطأ في الاتصال. حاول مرة أخرى بعد قليل.');
+        return;
       }
 
       const data = await response.json();
-      const reply = data.content && data.content[0] && data.content[0].text
-        ? data.content[0].text
+      const reply = typeof data.text === 'string' && data.text
+        ? data.text
         : 'عذراً، حدث خطأ بالرد. حاول مرة أخرى.';
 
       conversationHistory.push({ role: 'assistant', content: reply });
