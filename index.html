@@ -363,8 +363,6 @@ src="https://www.facebook.com/tr?id=1033238849263575&ev=PageView&noscript=1"
     .btn,.nav-cta,.chat-input-row button,.price-card .btn,.wa-button{min-height:48px;}
   }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script>emailjs.init("uOMUB1_GoSw1qlLGg");</script>
 </head>
 <body>
 
@@ -797,7 +795,6 @@ HARD RULES:
   let conversationHistory = [];
   let conversationEnded = false;
   let hasTrackedInitiateCheckout = false;
-  const SHEETS_URL = "https://script.google.com/macros/s/AKfycbxlKI5OKmvLf5Na2nul9ASpHFF2FuZ2gbKl_zZlbWtqeAH65KxgvsMDJL5TvqFA7KqfZA/exec";
   const WA_HANDOFF_RE = /\[\[WA_HANDOFF\]\]/;
 
   function validateContactField(idx, text){
@@ -887,12 +884,13 @@ HARD RULES:
       hideTyping();
 
       if(!response.ok){
-        throw new Error('API error: ' + response.status);
+        addMessageBubble('error', 'حدث خطأ في الاتصال. حاول مرة أخرى بعد قليل.');
+        return;
       }
 
       const data = await response.json();
-      const reply = data.content && data.content[0] && data.content[0].text
-        ? data.content[0].text
+      const reply = typeof data.text === 'string' && data.text
+        ? data.text
         : 'عذراً، حدث خطأ بالرد. حاول مرة أخرى.';
 
       conversationHistory.push({ role: 'assistant', content: reply });
@@ -908,34 +906,9 @@ HARD RULES:
         const { plan: detectedPlan, setup: detectedSetup, monthly: detectedMonthly } = detectPlan(historyText);
 
         try{
-          const result = await emailjs.send('clinazo_service', 'template_fmbi9jf', {
-            client_name: collectedData.name,
-            clinic_name: collectedData.clinicName,
-            client_whatsapp: collectedData.whatsapp,
-            client_city: collectedData.city,
-            client_email: collectedData.email,
-            plan_name: detectedPlan,
-            setup_fee: detectedSetup,
-            monthly_fee: detectedMonthly,
-            appointments: collectedData.appointments,
-            specialty: collectedData.specialty,
-            session_price: collectedData.sessionPrice,
-            main_problem: collectedData.mainProblem,
-            booking_method: collectedData.bookingMethod,
-            whatsapp_messages: collectedData.whatsappMessages,
-            runs_ads: collectedData.runsAds,
-            receptionist_count: collectedData.receptionCount
-          });
-          console.log('Email sent:', result);
-        }catch(err){
-          console.error('Email error:', err);
-        }
-
-        try{
-          await fetch(SHEETS_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "application/json" },
+          await fetch('/api/lead', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               client_name: collectedData.name,
               clinic_name: collectedData.clinicName,
@@ -955,10 +928,7 @@ HARD RULES:
               receptionist_count: collectedData.receptionCount
             })
           });
-          console.log("Sheets logged");
-        } catch (err) {
-          console.error("Sheets error:", err);
-        }
+        }catch(_){}
       }
 
       addMessageBubble('layla', displayText);

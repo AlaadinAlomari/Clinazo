@@ -3,6 +3,10 @@
     "api/chat.js": {
       "memory": 512,
       "maxDuration": 30
+    },
+    "api/lead.js": {
+      "memory": 128,
+      "maxDuration": 10
     }
   }
 }
