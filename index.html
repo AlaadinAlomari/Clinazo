@@ -865,8 +865,10 @@ HARD RULES:
       return;
     }
 
+    let savedFieldIndex = -1;
     if(questionIndex < 13){
       collectedData[questionKeys[questionIndex]] = text;
+      savedFieldIndex = questionIndex;
       questionIndex++;
     }
 
@@ -892,6 +894,16 @@ HARD RULES:
       const reply = typeof data.text === 'string' && data.text
         ? data.text
         : 'عذراً، حدث خطأ بالرد. حاول مرة أخرى.';
+
+      // If Layla signals that a contact field (name/clinic/phone/city/email)
+      // needs correction, roll back the save so the next answer overwrites it.
+      if(savedFieldIndex >= 8 && savedFieldIndex <= 12){
+        const reAskSignals = ['تأكد', 'يبدو', 'ممكن تعيد', 'غير صحيح', 'خطأ'];
+        if(reAskSignals.some(s => reply.includes(s))){
+          collectedData[questionKeys[savedFieldIndex]] = '';
+          questionIndex = savedFieldIndex;
+        }
+      }
 
       conversationHistory.push({ role: 'assistant', content: reply });
 
