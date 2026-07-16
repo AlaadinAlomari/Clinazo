@@ -79,6 +79,14 @@ HARD RULES:
 const MAX_MESSAGES = 30;
 const MAX_CONTENT_LENGTH = 2000;
 
+// Strips null bytes and non-printable ASCII control characters while preserving
+// tab (\x09), newline (\x0A), and carriage return (\x0D).
+const CONTROL_CHAR_RE = /[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g;
+
+function sanitizeContent(str) {
+  return str.replace(CONTROL_CHAR_RE, '');
+}
+
 export default async function handler(req, res) {
   const origin = req.headers.origin || '';
   if (ALLOWED_ORIGINS.includes(origin)) {
@@ -96,7 +104,20 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { messages } = req.body;
+  // Reject requests that aren't JSON — prevents body-parser confusion and
+  // type-confusion attacks where a non-JSON body is coerced to an object.
+  const ct = (req.headers['content-type'] || '');
+  if (!ct.includes('application/json')) {
+    return res.status(415).json({ error: 'Content-Type must be application/json' });
+  }
+
+  // Guard against a null/array/primitive body reaching property access below.
+  const body = req.body;
+  if (typeof body !== 'object' || body === null || Array.isArray(body)) {
+    return res.status(400).json({ error: 'Request body must be a JSON object' });
+  }
+
+  const { messages } = body;
 
   if (!Array.isArray(messages) || messages.length === 0) {
     return res.status(400).json({ error: 'Invalid messages' });
@@ -104,15 +125,38 @@ export default async function handler(req, res) {
   if (messages.length > MAX_MESSAGES) {
     return res.status(400).json({ error: 'Too many messages' });
   }
+
+  // Every valid conversation starts with Layla's assistant greeting.
+  // A first message from 'user' indicates a tampered or replayed payload.
+  if (
+    typeof messages[0] !== 'object' || messages[0] === null ||
+    messages[0].role !== 'assistant'
+  ) {
+    return res.status(400).json({ error: 'Invalid conversation structure' });
+  }
+
+  const sanitized = [];
   for (const msg of messages) {
     if (
       typeof msg !== 'object' || msg === null ||
       !['user', 'assistant'].includes(msg.role) ||
-      typeof msg.content !== 'string' ||
-      msg.content.length > MAX_CONTENT_LENGTH
+      typeof msg.content !== 'string'
     ) {
       return res.status(400).json({ error: 'Invalid message format' });
     }
+
+    // Remove control characters before length and empty checks so limits
+    // apply to what actually reaches Anthropic, not the raw untrusted string.
+    const clean = sanitizeContent(msg.content);
+
+    if (clean.trim().length === 0) {
+      return res.status(400).json({ error: 'Message content cannot be empty' });
+    }
+    if (clean.length > MAX_CONTENT_LENGTH) {
+      return res.status(400).json({ error: 'Message content too long' });
+    }
+
+    sanitized.push({ role: msg.role, content: clean });
   }
 
   let anthropicRes;
@@ -128,7 +172,7 @@ export default async function handler(req, res) {
         model: 'claude-sonnet-4-6',
         max_tokens: 1000,
         system: SYSTEM_PROMPT,
-        messages
+        messages: sanitized
       })
     });
   } catch (_) {
