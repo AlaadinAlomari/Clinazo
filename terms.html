@@ -1,152 +1,246 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الشروط والأحكام — Clinazo</title>
-<meta name="description" content="الشروط والأحكام لاستخدام منصة Clinazo لأتمتة واتساب في العيادات الطبية وعيادات الأسنان.">
+<title>Terms &amp; Conditions — Clinazo</title>
+<meta name="description" content="Terms and conditions for using the Clinazo WhatsApp automation platform for medical and dental clinics.">
 <meta name="robots" content="index, follow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%2300B4A0'/%3E%3Cstop offset='1' stop-color='%230078C8'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='24' height='24' rx='6' fill='url(%23g)'/%3E%3Cpath d='M2 12H6L9 4L15 20L18 12H22' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --dark:#04080F;--teal:#00B4A0;--blue:#0078C8;--light:#F0F4F8;
-    --surface:#FFFFFF;--muted:#5A6B7A;--text:#04080F;
-    --gradient:linear-gradient(135deg,#00B4A0,#0078C8);
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{font-family:'IBM Plex Sans Arabic',sans-serif;color:var(--text);background:var(--surface);line-height:1.8;}
-  h1,h2,h3{font-family:'Syne',sans-serif;font-weight:800;}
-  a{text-decoration:none;color:inherit;}
-  .container{max-width:880px;margin:0 auto;padding:0 24px;}
-  .btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 26px;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;border:none;font-family:inherit;}
-  .btn-primary{background:var(--gradient);color:#fff;}
+:root{
+  --dark:#04080F;
+  --dark-2:#0A101C;
+  --teal:#00B4A0;
+  --blue:#0078C8;
+  --ink:#F4F7FB;
+  --muted:rgba(244,247,251,.58);
+  --muted-2:rgba(244,247,251,.38);
+  --glass:rgba(255,255,255,.06);
+  --glass-border:rgba(255,255,255,.12);
+  --grad:linear-gradient(135deg,#00B4A0 0%,#0078C8 100%);
+  --display:"Syne",system-ui,sans-serif;
+  --body:"DM Sans",system-ui,Helvetica,Arial,sans-serif;
+  --r:12px;
+  --r-sm:8px;
+  --max:1140px;
+  --pad:clamp(18px,4vw,36px);
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --blur:18px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--ink);background:var(--dark);line-height:1.6;font-size:16px;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+.container{width:100%;max-width:var(--max);margin:0 auto;padding:0 var(--pad);position:relative;z-index:2}
 
-  /* NAV */
-  .nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.06);}
-  .nav-inner{max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
-  .logo{display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-weight:800;font-size:21px;}
-  .logo-mark{width:38px;height:38px;border-radius:10px;background:var(--gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-  .nav-links{display:flex;align-items:center;gap:30px;font-weight:600;font-size:15px;}
-  .nav-links a:hover{color:var(--teal);}
-  @media(max-width:680px){.nav-links{display:none;}}
+.bg-stage{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  background:
+    radial-gradient(1200px 800px at 10% -10%,rgba(0,120,200,.22),transparent 55%),
+    radial-gradient(900px 700px at 95% 15%,rgba(0,180,160,.18),transparent 50%),
+    radial-gradient(800px 600px at 50% 100%,rgba(0,120,200,.12),transparent 55%),
+    var(--dark);}
+.orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.45;will-change:transform;animation:orbDrift 22s var(--ease) infinite alternate}
+.orb-1{width:420px;height:420px;left:-8%;top:8%;background:rgba(0,180,160,.45);animation-duration:26s}
+.orb-2{width:520px;height:520px;right:-12%;top:28%;background:rgba(0,120,200,.4);animation-duration:30s;animation-delay:-6s}
+.orb-3{width:360px;height:360px;left:30%;bottom:5%;background:rgba(0,180,160,.28);animation-duration:24s;animation-delay:-12s}
+@keyframes orbDrift{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(40px,-30px,0) scale(1.08)}100%{transform:translate3d(-30px,40px,0) scale(.95)}}
 
-  /* LEGAL CONTENT */
-  .legal{padding:70px 0 100px;}
-  .legal .updated{color:var(--muted);font-size:14px;margin-bottom:36px;}
-  .legal h1{font-size:clamp(28px,4vw,42px);margin-bottom:8px;}
-  .legal h2{font-size:21px;margin:36px 0 14px;color:var(--blue);}
-  .legal p,.legal li{color:var(--muted);font-size:16px;margin-bottom:10px;}
-  .legal ul{padding-right:22px;margin-bottom:10px;}
-  .legal strong{color:var(--text);}
-  .legal a.mail{color:var(--teal);font-weight:600;}
+.glass{background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--r);backdrop-filter:blur(var(--blur)) saturate(1.25);-webkit-backdrop-filter:blur(var(--blur)) saturate(1.25);box-shadow:0 1px 0 rgba(255,255,255,.08) inset,0 20px 50px rgba(0,0,0,.28);position:relative}
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.1),transparent 42%);opacity:.7}
 
-  /* FOOTER */
-  .footer{background:var(--dark);color:rgba(255,255,255,.7);padding:60px 0 30px;}
-  .footer-inner{display:flex;flex-wrap:wrap;justify-content:space-between;gap:40px;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.1);}
-  .footer-brand .logo{color:#fff;margin-bottom:10px;}
-  .footer-brand p{color:rgba(255,255,255,.5);font-size:14px;}
-  .footer-links{display:flex;flex-direction:column;gap:10px;font-size:15px;}
-  .footer-links a:hover{color:var(--teal);}
-  .footer-copy{font-size:14px;color:rgba(255,255,255,.5);text-align:right;}
-  .footer-bottom{padding-top:24px;text-align:center;font-size:13px;color:rgba(255,255,255,.4);}
-  @media(max-width:600px){.footer-inner{flex-direction:column;}.footer-copy{text-align:right;}}
+h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:14px 28px;border-radius:var(--r-sm);font-weight:700;font-size:15px;border:none;cursor:pointer;transition:transform .25s var(--ease),box-shadow .25s var(--ease),filter .25s var(--ease)}
+.btn-primary{background:var(--grad);color:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.12) inset,0 10px 36px rgba(0,120,200,.4),0 0 28px rgba(0,180,160,.25)}
+.btn-primary:hover{transform:translateY(-2px) scale(1.02);filter:brightness(1.08)}
+
+.nav{position:sticky;top:0;z-index:100;background:transparent;border-bottom:1px solid transparent;transition:background .35s var(--ease),border-color .35s var(--ease),backdrop-filter .35s var(--ease)}
+.nav.scrolled{background:rgba(4,8,15,.72);backdrop-filter:blur(20px) saturate(1.3);-webkit-backdrop-filter:blur(20px) saturate(1.3);border-bottom-color:var(--glass-border);box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.nav-inner{max-width:var(--max);margin:0 auto;padding:14px var(--pad);display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{display:flex;align-items:center;gap:12px;font-family:var(--display);font-weight:800;font-size:22px;line-height:1}
+.logo-mark{width:36px;height:36px;border-radius:var(--r-sm);background:var(--grad);display:grid;place-items:center;flex-shrink:0;box-shadow:0 0 24px rgba(0,180,160,.45)}
+.nav-links{display:flex;align-items:center;gap:8px 28px;font-size:14px;font-weight:600}
+.nav-links a:not(.btn){color:var(--muted);transition:color .2s}
+.nav-links a:not(.btn):hover{color:#fff}
+.nav-cta{padding:11px 20px;min-height:44px;font-size:14px}
+.nav-toggle{display:none;flex-direction:column;justify-content:center;gap:5px;width:44px;height:44px;border:none;background:transparent;cursor:pointer;padding:10px;flex-shrink:0}
+.nav-toggle span{display:block;width:100%;height:1.5px;background:#fff;border-radius:2px;transition:.25s}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+.legal{padding:clamp(64px,10vw,100px) 0 clamp(80px,12vw,120px);position:relative;z-index:2}
+.legal-wrap{max-width:780px;margin:0 auto}
+.legal-wrap h1{font-size:clamp(28px,4.5vw,48px);margin-bottom:10px}
+.updated{color:var(--muted-2);font-size:13px;margin-bottom:44px}
+.legal-card{padding:clamp(28px,5vw,52px);margin-top:0}
+.legal-card h2{font-size:18px;color:var(--teal);margin:36px 0 12px}
+.legal-card h2:first-child{margin-top:0}
+.legal-card p,.legal-card li{color:var(--muted);font-size:15.5px;line-height:1.75;margin-bottom:8px}
+.legal-card ul{padding-left:22px;margin-bottom:10px}
+.legal-card strong{color:var(--ink);font-weight:600}
+.legal-card a.mail{color:var(--teal);font-weight:600}
+.legal-card a.mail:hover{text-decoration:underline}
+
+.footer{position:relative;z-index:2;background:rgba(0,0,0,.35);border-top:1px solid var(--glass-border);padding:56px 0 28px}
+.footer-inner{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:32px;align-items:start}
+.footer-brand p{color:var(--muted);font-size:14px;margin-top:8px;max-width:280px;line-height:1.5}
+.footer-brand .tag{font-family:var(--display);font-weight:700;font-size:16px;color:#fff;margin-top:12px}
+.footer-col h4{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);margin-bottom:14px}
+.footer-links{display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--muted)}
+.footer-links a:hover{color:var(--teal)}
+.footer-copy{font-size:13px;color:var(--muted-2);line-height:1.7}
+.footer-bottom{margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,255,.06);font-size:12px;color:var(--muted-2);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media(max-width:760px){
+  .nav-toggle{display:flex}
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(4,8,15,.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border);flex-direction:column;align-items:stretch;padding:12px var(--pad) 20px;gap:4px}
+  .nav-links.open{display:flex}
+  .nav-links a:not(.btn){padding:14px 4px;border-bottom:1px solid rgba(255,255,255,.06);color:#fff}
+  .nav-links .btn{margin-top:8px;width:100%}
+  .footer-inner{grid-template-columns:1fr}
+}
+@media(max-width:960px){.footer-inner{grid-template-columns:1fr 1fr}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}}
 </style>
 </head>
 <body>
 
-<header class="nav">
+<div class="bg-stage" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<header class="nav" id="nav">
   <div class="nav-inner">
-    <a href="index.html" class="logo">
-      <span class="logo-mark">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M2 12H6L9 4L15 20L18 12H22" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <a href="index.html" class="logo" aria-label="Clinazo home">
+      <span class="logo-mark" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M2 12H6L9 4L15 20L18 12H22" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </span>
       <span>Clinazo</span>
     </a>
-    <nav class="nav-links">
-      <a href="index.html#pricing">الأسعار</a>
-      <a href="index.html#chat">احكِ مع ليلى</a>
+    <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#chat">Chat with Layla</a>
+      <a href="index.html#pricing" class="btn btn-primary nav-cta">See plans</a>
     </nav>
-    <a href="index.html#pricing" class="btn btn-primary">ابدأ الآن</a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
 
-<section class="legal">
-  <div class="container">
-    <h1>الشروط والأحكام</h1>
-    <p class="updated">آخر تحديث: 26 يونيو 2026</p>
+<main>
+  <section class="legal">
+    <div class="container">
+      <div class="legal-wrap">
+        <h1>Terms &amp; Conditions</h1>
+        <p class="updated">Last updated: 26 June 2026</p>
 
-    <h2>1. القبول بالشروط</h2>
-    <p>باستخدام Clinazo، توافق على هذه الشروط.</p>
+        <div class="glass legal-card">
+          <h2>1. Acceptance of Terms</h2>
+          <p>By using Clinazo, you agree to these terms and conditions in full.</p>
 
-    <h2>2. وصف الخدمة</h2>
-    <p>Clinazo منصة أتمتة واتساب للعيادات الطبية والأسنان في منطقة الخليج. توفر المنصة:</p>
-    <ul>
-      <li>نظام ليلى للرد التلقائي على واتساب</li>
-      <li>حجز المواعيد والتذكيرات التلقائية</li>
-      <li>أدوات تسويقية للعيادات</li>
-      <li>تقارير وتحليلات</li>
-    </ul>
+          <h2>2. Description of Service</h2>
+          <p>Clinazo is a WhatsApp automation platform for medical and dental clinics across the Gulf region. The platform provides:</p>
+          <ul>
+            <li>Layla — an AI assistant for automated WhatsApp responses</li>
+            <li>Appointment booking and automated reminders</li>
+            <li>Marketing tools for clinics</li>
+            <li>Reports and analytics</li>
+          </ul>
 
-    <h2>3. الاشتراك والدفع</h2>
-    <ul>
-      <li>رسوم التأسيس تُدفع مرة واحدة وغير قابلة للاسترداد بعد بدء الإعداد</li>
-      <li>الاشتراك الشهري يُجدَّد تلقائياً</li>
-      <li>يمكن الإلغاء في أي وقت مع إشعار 30 يوم</li>
-      <li>ضمان استرداد كامل خلال 30 يوم من تاريخ الإطلاق</li>
-    </ul>
+          <h2>3. Subscription &amp; Payment</h2>
+          <ul>
+            <li>Setup fees are paid once and are non-refundable after onboarding begins</li>
+            <li>Monthly subscriptions renew automatically</li>
+            <li>Cancellation is possible at any time with 30 days' notice</li>
+            <li>Full refund guarantee within 30 days of your system going live</li>
+          </ul>
 
-    <h2>4. المسؤوليات</h2>
-    <ul>
-      <li>أنت مسؤول عن دقة المعلومات المقدمة لإعداد النظام</li>
-      <li>Clinazo غير مسؤول عن القرارات الطبية أو النصائح الطبية</li>
-      <li>ليلى أداة إدارية وليست بديلاً عن الرأي الطبي المتخصص</li>
-    </ul>
+          <h2>4. Responsibilities</h2>
+          <ul>
+            <li>You are responsible for the accuracy of information provided during setup</li>
+            <li>Clinazo is not liable for medical decisions or medical advice</li>
+            <li>Layla is an administrative tool — it is not a substitute for qualified medical opinion</li>
+          </ul>
 
-    <h2>5. الاستخدام المقبول</h2>
-    <p>لا يجوز استخدام Clinazo لـ:</p>
-    <ul>
-      <li>إرسال رسائل غير مرغوب فيها</li>
-      <li>انتهاك خصوصية المرضى</li>
-      <li>أي نشاط غير قانوني</li>
-    </ul>
+          <h2>5. Acceptable Use</h2>
+          <p>Clinazo may not be used to:</p>
+          <ul>
+            <li>Send unsolicited spam messages</li>
+            <li>Violate patient privacy</li>
+            <li>Engage in any unlawful activity</li>
+          </ul>
 
-    <h2>6. إنهاء الخدمة</h2>
-    <p>يحق لـ Clinazo إنهاء الخدمة عند انتهاك الشروط.</p>
+          <h2>6. Termination</h2>
+          <p>Clinazo reserves the right to terminate the service if these terms are violated.</p>
 
-    <h2>7. تواصل معنا</h2>
-    <p>لأي استفسار بخصوص هذه الشروط، تواصل معنا على <a class="mail" href="mailto:support@clinazo.com">support@clinazo.com</a></p>
-  </div>
-</section>
+          <h2>7. Contact Us</h2>
+          <p>For any questions about these terms, reach us at <a class="mail" href="mailto:support@clinazo.com">support@clinazo.com</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
 
 <footer class="footer">
   <div class="container">
     <div class="footer-inner">
       <div class="footer-brand">
-        <a href="index.html" class="logo">
-          <span class="logo-mark">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M2 12H6L9 4L15 20L18 12H22" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <a href="index.html" class="logo" aria-label="Clinazo">
+          <span class="logo-mark" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M2 12H6L9 4L15 20L18 12H22" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </span>
           <span>Clinazo</span>
         </a>
-        <p>عيادتك تشتغل وأنت نايم</p>
+        <p class="tag">Your Clinic Runs While You Sleep</p>
+        <p>WhatsApp patient care for private clinics across the Gulf.</p>
       </div>
-      <div class="footer-links">
-        <a href="index.html">الرئيسية</a>
-        <a href="index.html#pricing">الأسعار</a>
-        <a href="privacy.html">سياسة الخصوصية</a>
-        <a href="terms.html">الشروط والأحكام</a>
-        <a href="refund.html">سياسة الاسترداد</a>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <div class="footer-links">
+          <a href="index.html">Home</a>
+          <a href="index.html#pricing">Pricing</a>
+          <a href="index.html#chat">Chat with Layla</a>
+          <a href="index.html#roi">Revenue calculator</a>
+        </div>
       </div>
-      <div class="footer-copy">
-        <p>© 2026 Clinazo · clinazo.com</p>
-        <p>support@clinazo.com</p>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <div class="footer-links">
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="refund.html">Refund policy</a>
+        </div>
+        <div class="footer-copy" style="margin-top:18px">
+          <p><a href="mailto:support@clinazo.com">support@clinazo.com</a></p>
+        </div>
       </div>
     </div>
-    <div class="footer-bottom">جميع الحقوق محفوظة لـ Clinazo</div>
+    <div class="footer-bottom">
+      <span>© 2026 Clinazo · clinazo.com</span>
+      <span>All rights reserved</span>
+    </div>
   </div>
 </footer>
 
+<script>
+(function(){
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function(){ nav.classList.toggle('scrolled', window.scrollY > 10); }, {passive:true});
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', function(){
+    var isOpen = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+})();
+</script>
 </body>
 </html>
