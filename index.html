@@ -613,6 +613,45 @@ h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.02em;line-h
   .footer-inner{grid-template-columns:1fr}
   .hero-float{display:none}
   .steps::before{left:26px}
+
+  /* Compare table → stacked cards on mobile */
+  .compare-scroll{overflow-x:visible}
+  .compare-panel.glass{min-width:0}
+  .compare table thead{display:none}
+  .compare table tbody tr{
+    display:block;
+    padding:18px 20px;
+    border-bottom:1px solid var(--border);
+  }
+  .compare table tbody tr:last-child{border-bottom:none}
+  .compare table tbody td{
+    display:block;
+    border:none;
+    padding:0;
+    width:100% !important;
+    font-size:14px;
+    line-height:1.5;
+  }
+  .compare table tbody td:first-child{
+    font-size:15px;font-weight:700;color:var(--ink);
+    margin-bottom:12px;
+  }
+  .compare table tbody td.bad,
+  .compare table tbody td.good{
+    display:flex;flex-direction:column;gap:2px;
+    margin-top:8px;background:none;padding:10px 12px;
+    border-radius:8px;
+  }
+  .compare table tbody td.bad{background:rgba(220,38,38,.05);border:1px solid rgba(220,38,38,.12)}
+  .compare table tbody td.good{background:rgba(0,180,160,.06);border:1px solid rgba(0,180,160,.18)}
+  .compare table tbody td.bad::before,
+  .compare table tbody td.good::before{
+    content:attr(data-label);
+    font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+    opacity:.7;margin-bottom:2px;
+  }
+  .compare table tbody td.bad::before{color:var(--danger)}
+  .compare table tbody td.good::before{color:#059669}
 }
 @media(max-width:400px){
   .price-amount .num{font-size:34px}
@@ -783,13 +822,13 @@ h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.02em;line-h
             </tr>
           </thead>
           <tbody>
-            <tr><td>After-hours messages</td><td class="bad">Stay unanswered until morning</td><td class="good">Layla replies instantly and books</td></tr>
-            <tr><td>Forgotten appointments</td><td class="bad">Empty chair, direct loss</td><td class="good">3 automatic reminders before the visit</td></tr>
-            <tr><td>Lapsed patients</td><td class="bad">They forget you entirely</td><td class="good">A personal win-back message brings them back</td></tr>
-            <tr><td>Pricing questions</td><td class="bad">Wait hours for a reply</td><td class="good">Accurate answers around the clock</td></tr>
-            <tr><td>New staff onboarding</td><td class="bad">Weeks of training and early mistakes</td><td class="good">Ready on Clinazo in about an hour</td></tr>
-            <tr><td>Ad traffic</td><td class="bad">Tap, no clear page, gone</td><td class="good">A clinic page that converts to bookings</td></tr>
-            <tr><td>Happy patients after visits</td><td class="bad">Their review never gets written</td><td class="good">Automatic invite to leave a Google review</td></tr>
+            <tr><td>After-hours messages</td><td class="bad" data-label="Without Clinazo">Stay unanswered until morning</td><td class="good" data-label="With Clinazo">Layla replies instantly and books</td></tr>
+            <tr><td>Forgotten appointments</td><td class="bad" data-label="Without Clinazo">Empty chair, direct loss</td><td class="good" data-label="With Clinazo">3 automatic reminders before the visit</td></tr>
+            <tr><td>Lapsed patients</td><td class="bad" data-label="Without Clinazo">They forget you entirely</td><td class="good" data-label="With Clinazo">A personal win-back message brings them back</td></tr>
+            <tr><td>Pricing questions</td><td class="bad" data-label="Without Clinazo">Wait hours for a reply</td><td class="good" data-label="With Clinazo">Accurate answers around the clock</td></tr>
+            <tr><td>New staff onboarding</td><td class="bad" data-label="Without Clinazo">Weeks of training and early mistakes</td><td class="good" data-label="With Clinazo">Ready on Clinazo in about an hour</td></tr>
+            <tr><td>Ad traffic</td><td class="bad" data-label="Without Clinazo">Tap, no clear page, gone</td><td class="good" data-label="With Clinazo">A clinic page that converts to bookings</td></tr>
+            <tr><td>Happy patients after visits</td><td class="bad" data-label="Without Clinazo">Their review never gets written</td><td class="good" data-label="With Clinazo">Automatic invite to leave a Google review</td></tr>
           </tbody>
         </table>
       </div>
