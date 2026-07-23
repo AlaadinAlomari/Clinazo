@@ -34,20 +34,26 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{font-family:var(--body);color:var(--ink);background:var(--surface);line-height:1.65;font-size:16px;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
+body{font-family:var(--body);color:var(--ink);background:radial-gradient(ellipse 85% 50% at 5% 8%,rgba(0,180,160,.08),transparent),radial-gradient(ellipse 75% 60% at 95% 92%,rgba(0,120,200,.06),transparent),#F8FBFF;line-height:1.65;font-size:16px;overflow-x:hidden;-webkit-font-smoothing:antialiased;min-height:100vh}
 a{color:inherit;text-decoration:none}
 button{font:inherit}
 .container{width:100%;max-width:var(--max);margin:0 auto;padding:0 var(--pad);position:relative;z-index:2}
 
 /* Card */
 .glass{
-  background:#FFFFFF;
-  border:1px solid var(--border);
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(255,255,255,.82);
   border-radius:var(--r);
-  box-shadow:var(--shadow);
+  box-shadow:0 4px 24px rgba(0,0,0,.07),0 1px 0 rgba(255,255,255,1) inset;
+  backdrop-filter:blur(18px) saturate(1.25);
+  -webkit-backdrop-filter:blur(18px) saturate(1.25);
   position:relative;
 }
-.glass::before{display:none}
+.glass::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.6),transparent 50%);
+  opacity:.75;
+}
 
 h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.02em;line-height:1.1}
 
